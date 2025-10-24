@@ -1,4 +1,4 @@
-import common from "@/common/common";
+import { refinedSearchParams } from "@/lib/utils";
 import staticDataContext from "@/context/staticDataContext";
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
@@ -23,7 +23,7 @@ const DefaultRedirect = () => {
     pageName: "Import Deductee",
   };
 
-  const refinedParams = common.getRefinedSearchParams(searchObj);
+  const refinedParams = refinedSearchParams(searchObj);
 
   // Navigate to importDeducteeDetails with the computed params
   return (

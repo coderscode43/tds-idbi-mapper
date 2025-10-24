@@ -1,5 +1,4 @@
 import DropdownMenu from "../component/DropdownMenu";
-import { TooltipWrapper } from "../component/Tooltip";
 
 const TopBar = ({ handleSideBar }) => {
   return (
@@ -18,23 +17,13 @@ const TopBar = ({ handleSideBar }) => {
               />
             </div>
           </div>
-          {/* <div className="mr-[90px]">
+          <div className="mr-[90px]">
              <h1 className="text-xl font-bold text-[var(--primary-color)]">
               R J SONI and Associates - ABCDE1234A
             </h1>
-          </div> */}
+          </div>
           <div className="flex items-center justify-center gap-5">
-            <div>
-              <TooltipWrapper tooltipText={"Refresh"}>
-                <button
-                  type="button"
-                  onClick={() => window.location.reload()}
-                  className="cursor-pointer rounded-md bg-[#12a4ed] px-2 py-1.5 text-sm text-white"
-                >
-                  Refresh
-                </button>
-              </TooltipWrapper>
-            </div>
+           
             <div>
               <DropdownMenu />
             </div>

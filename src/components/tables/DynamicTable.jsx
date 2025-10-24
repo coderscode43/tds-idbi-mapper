@@ -1,13 +1,9 @@
-import common from "@/common/common";
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
+import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
 
-const DynamicTableCheckBoxAction = ({
-  tableHead,
-  tableData,
-  autoResize,
-  setFileListData,
-}) => {
-  const [lastLocation] = tableData;
+const DynamicTable = ({ tableHead, tableData }) => {
+  // Skeleton loader rows count (adjust as needed)
+
 
   return (
     <div className="relative w-full">
@@ -23,7 +19,7 @@ const DynamicTableCheckBoxAction = ({
               }}
             >
               <tr>
-                {tableHead?.map(({ label }, index) => (
+                {tableHead.map(({ label }, index) => (
                   <th
                     key={index}
                     className={`z-0 border-r-[1.5px] border-l-[1.5px] bg-[var(--secondary-color)] p-2 whitespace-nowrap text-white ${
@@ -45,48 +41,33 @@ const DynamicTableCheckBoxAction = ({
             </thead>
 
             <tbody>
-              {!lastLocation ||
-              (Object.keys(lastLocation).length === 1 &&
-                Object.keys(lastLocation)[0] === "lastLocation") ? (
+              {tableData.length === 0 ? (
                 <tr>
                   <td
                     colSpan={tableHead.length}
                     className="p-4 text-center text-[16px] font-semibold text-red-500"
                   >
-                    No Files Added
+                    No Data Found
                   </td>
                 </tr>
               ) : (
-                tableData?.map((data, index) => {
+                tableData.map((data, index) => {
                   return (
-                    <tr
-                      key={index}
-                      className={
-                        "cursor-pointer bg-white text-center hover:bg-gray-100"
-                      }
-                      onDoubleClick={async () => {
-                        const response = await common.getGotoFolder(data);
-                        setFileListData(response?.data?.entities || []);
-                      }}
-                    >
-                      {tableHead?.map(({ key }, colIndex) => (
+                    <tr key={index} className={`cursor-pointer text-center`}>
+                      {tableHead.map(({ key, formatter }, colIndex) => (
                         <td
                           key={colIndex}
-                          className={`border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap ${
-                            autoResize
-                              ? "w-auto"
-                              : "max-w-[110px] min-w-[20px] overflow-hidden"
-                          } `}
+                          className={`w-auto border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap`}
                         >
-                          {key === "select" ? (
-                            <input type="checkbox" name="select" id="select" />
-                          ) : key === "action" ? (
-                            <a href={data[key]} download>
-                              <i className="fa-solid fa-download"></i>
-                            </a>
-                          ) : key === "size" && data[key] === 0 ? null : (
-                            data[key]
-                          )}
+                          {key === "CHALLAN_MISMATCH"
+                            ? data[key] === "1"
+                              ? "True"
+                              : data[key] === "0"
+                                ? "False"
+                                : " -- "
+                            : formatter
+                              ? formatter(data[key])
+                              : (data[key] ?? " ")}
                         </td>
                       ))}
                     </tr>
@@ -101,4 +82,4 @@ const DynamicTableCheckBoxAction = ({
   );
 };
 
-export default DynamicTableCheckBoxAction;
+export default DynamicTable;

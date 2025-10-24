@@ -3,8 +3,11 @@ import {
   addFolder,
   createFolder,
   fileList,
+  gotoFolder,
+  gotoLastLocation,
   paginationListData,
   paginationWithSearchListData,
+  startProcess,
 } from "@/service/apiService";
 
 const common = {
@@ -14,36 +17,6 @@ const common = {
       ...prev,
       [name]: value,
     }));
-  },
-
-  getRefinedSearchParams: (searchParams) => {
-    const refinedSearchParams = (obj) =>
-      Object.fromEntries(
-        Object.entries(obj)
-          .map(([key, value]) => {
-            // Trim whitespace if value is a string
-            if (typeof value === "string") {
-              value = value.trim();
-            }
-            return [key, value];
-          })
-          .filter(
-            (entry) =>
-              entry[1] !== "" && entry[1] !== null && entry[1] !== undefined
-          )
-          .map(([key, value]) => {
-            // If value matches YYYY-MM-DD format, convert to ISO string
-            if (
-              typeof value === "string" &&
-              /^\d{4}-\d{2}-\d{2}$/.test(value)
-            ) {
-              return [key, new Date(value).toISOString()];
-            }
-            return [key, value];
-          })
-      );
-
-    return JSON.stringify(refinedSearchParams(searchParams));
   },
 
   getSearchListData: async (entity, pageNo, resultPerPage, searchParams) => {
@@ -114,12 +87,21 @@ const common = {
 
     const lastLocation = fileListData[0]?.lastLocation || "/";
 
-    const formDataObj = new FormData();
-    formDataObj.append("formData", formData);
-    formDataObj.append("lastLocation", lastLocation);
-    formDataObj.append("name", folderName);
+    return await createFolder(formData, lastLocation, folderName);
+  },
 
-    return await createFolder(formDataObj);
+  getGotoFolder: async (fileData) => {
+    const lastLocation = fileData?.lastLocation;
+
+    return await gotoFolder(lastLocation, fileData);
+  },
+
+  getGotoLastLocation: async (lastLocation, lastPart) => {
+    return await gotoLastLocation(lastLocation, lastPart);
+  },
+
+  getStartProcess: async (entity, formData) => {
+    await startProcess(entity, formData);
   },
 
   getPagination: async (entity, pageNo) => {

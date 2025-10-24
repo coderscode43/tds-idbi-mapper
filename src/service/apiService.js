@@ -69,7 +69,38 @@ export const addFileInFolder = async (formDataObj) => {
   return response;
 };
 
-export const createFolder = async (formDataObj) => {
-  const response = await axios.get(`apiWorkingFile/createFolder`, formDataObj);
+export const createFolder = async (formData, lastLocation, folderName) => {
+  const response = await axios.get(`apiWorkingFile/createFolder`, {
+    params: {
+      newdata: JSON.stringify(formData),
+      lastLocation: lastLocation,
+      name: folderName,
+    },
+  });
+  return response;
+};
+
+export const gotoFolder = async (lastLocation, fileData) => {
+  const response = await axios.get(`apiWorkingFile/getFolder`, {
+    params: {
+      lastLocation: lastLocation,
+      name: JSON.stringify(fileData),
+    },
+  });
+  return response;
+};
+
+export const gotoLastLocation = async (lastLocation, lastPart) => {
+  const response = await axios.get(`apiWorkingFile/gotoLastLocation`, {
+    params: {
+      lastLocation: lastLocation,
+      crtLocation: lastPart,
+    },
+  });
+  return response;
+};
+
+export const startProcess = async (entity, formData) => {
+  const response = await axios.post(`api${entity}/startProcess`, formData);
   return response;
 };

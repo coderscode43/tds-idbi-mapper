@@ -1,5 +1,5 @@
-import common from "@/common/common";
 import staticDataContext from "@/context/staticDataContext";
+import { refinedSearchParams } from "@/lib/utils";
 import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import DynamicModal from "../component/DynamicModal";
@@ -31,7 +31,7 @@ const Sidebar = ({ sideBarOpen }) => {
     month: crtMonth,
     quarter: crtQuarter,
   };
-  const refinedParams = common.getRefinedSearchParams(searchObj);
+  const refinedParams = refinedSearchParams(searchObj);
 
   return (
     <>
@@ -54,10 +54,10 @@ const Sidebar = ({ sideBarOpen }) => {
                       }
                       className={({ isActive }) =>
                         [
-                          "relative flex cursor-pointer items-center justify-between py-2 whitespace-nowrap transition-all",
+                          "relative flex cursor-pointer items-center justify-between py-2 font-medium whitespace-nowrap text-black transition-all after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left",
                           isActive
-                            ? "font-medium text-black after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-100 after:bg-[#72a83a] after:transition-transform after:duration-300"
-                            : "font-medium text-black after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-[#72a83a] after:transition-transform after:duration-300 hover:after:scale-x-100",
+                            ? "after:scale-x-100 after:bg-[#72a83a] after:transition-transform after:duration-300"
+                            : "after:scale-x-0 after:bg-[#72a83a] after:transition-transform after:duration-300 hover:after:scale-x-100",
                         ].join(" ")
                       }
                     >

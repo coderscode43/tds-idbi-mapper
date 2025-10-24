@@ -1,3 +1,4 @@
+import common from "@/common/common";
 import { useState } from "react";
 import DynamicTableCheckBoxAction from "../tables/DynamicTableCheckBoxAction";
 import AddDocumentModal from "./AddDocumentModal";
@@ -27,6 +28,19 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
     const { name, value } = e.target;
     console.log(name, "Name");
     console.log(value, "Value");
+  };
+
+  const handleBack = async () => {
+    const lastLocation = fileListData[0]?.lastLocation;
+    const lastPart = lastLocation.substring(lastLocation.lastIndexOf("/") + 1);
+
+    try {
+      const response = await common.getGotoLastLocation(lastLocation, lastPart);
+      console.log(response);
+      setFileListData(response?.data?.entities);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -85,8 +99,6 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
               </button>
             </div>
 
-     
-
             {/* Table */}
             <DynamicTableCheckBoxAction
               tableHead={tableHead}
@@ -97,17 +109,18 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
 
           {/* Footer Buttons */}
           <div className="flex justify-end gap-3 bg-blue-100 px-6 py-4">
-            <button className="cursor-pointer space-x-1 rounded-md bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700">
+            {/* <button className="cursor-pointer space-x-1 rounded-md bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700">
               <i className="fa-solid fa-file-zipper"></i>{" "}
               <span>Generate Zip</span>
-            </button>
+            </button> */}
             <button className="cursor-pointer space-x-1 rounded-md bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700">
-              <i className="fa-solid fa-trash"></i>
-              <span>Delete</span>
+              <i className="fa-solid fa-trash"></i> <span>Delete</span>
             </button>
-            <button className="cursor-pointer space-x-1 rounded-md bg-gray-600 px-4 py-2 font-semibold text-white hover:bg-gray-700">
-              <i className="fa-solid fa-arrow-left"></i> 
-              <span>Back</span>
+            <button
+              className="cursor-pointer space-x-1 rounded-md bg-gray-600 px-4 py-2 font-semibold text-white hover:bg-gray-700"
+              onClick={handleBack}
+            >
+              <i className="fa-solid fa-arrow-left"></i> <span>Back</span>
             </button>
           </div>
         </div>
