@@ -1,8 +1,11 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useState } from "react";
 import DynamicModal from "./DynamicModal";
+import { useContext } from "react";
+import staticDataContext from "@/context/staticDataContext";
 
 const DropdownMenu = () => {
+  const { userName } = useContext(staticDataContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const closeModal = () => setIsModalOpen(false);
@@ -29,7 +32,9 @@ const DropdownMenu = () => {
                 src="/images/user.png"
                 alt="User Image"
               />
-              <span>Admin</span>
+              <span>
+                {userName?.charAt(0).toUpperCase() + userName?.slice(1)}
+              </span>
             </button>
           </MenuItem>
           <MenuItem>

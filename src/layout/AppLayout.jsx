@@ -1,3 +1,6 @@
+import ErrorModal from "@/components/modals/ErrorModal";
+import OverrideModal from "@/components/modals/OverrideModal";
+import SuccessModal from "@/components/modals/SuccessModal";
 import Sidebar from "@/components/navigation/Sidebar";
 import TopBar from "@/components/navigation/Topbar";
 import { useState } from "react";
@@ -12,6 +15,9 @@ const AppLayout = () => {
     <>
       <TopBar handleSideBar={handleSideBar} />
       <Sidebar sideBarOpen={sideBarOpen} />
+      <SuccessModal />
+      <ErrorModal />
+      <OverrideModal />
       <main
         className={`transition-all duration-300 ease-in-out ${sideBarOpen ? "mx-5 my-5 ml-[260px]" : "mx-10 my-5 ml-[104px]"}`}
       >

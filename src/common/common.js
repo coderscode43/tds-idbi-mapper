@@ -101,7 +101,7 @@ const common = {
   },
 
   getStartProcess: async (entity, formData) => {
-    await startProcess(entity, formData);
+    return await startProcess(entity, formData);
   },
 
   getPagination: async (entity, pageNo) => {

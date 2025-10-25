@@ -1,9 +1,6 @@
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
-import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
 
 const DynamicTable = ({ tableHead, tableData }) => {
-  // Skeleton loader rows count (adjust as needed)
-
 
   return (
     <div className="relative w-full">
@@ -59,15 +56,9 @@ const DynamicTable = ({ tableHead, tableData }) => {
                           key={colIndex}
                           className={`w-auto border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap`}
                         >
-                          {key === "CHALLAN_MISMATCH"
-                            ? data[key] === "1"
-                              ? "True"
-                              : data[key] === "0"
-                                ? "False"
-                                : " -- "
-                            : formatter
-                              ? formatter(data[key])
-                              : (data[key] ?? " ")}
+                          {formatter
+                            ? formatter(data[key])
+                            : (data[key] ?? " ")}
                         </td>
                       ))}
                     </tr>

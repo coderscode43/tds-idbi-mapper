@@ -1,43 +1,78 @@
+import common from "@/common/common";
+import FilterSelect from "@/components/component/FilterSelect";
 import staticDataContext from "@/context/staticDataContext";
-import React from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 const SettingPage = () => {
-  const { Quarter, Tan, Section } = useContext(staticDataContext);
-  return (
-    <>
-      <div className="space-y-5">
-        <h1 className="mb-4 text-[25px] font-bold">Setting</h1>
+  const {
+    Quarter,
+    crtQuarter,
+    crtMonth,
+    Month,
+    crtFy,
+    financialYear,
+    typeOfFile,
+    workingFileBasePath,
+  } = useContext(staticDataContext);
 
-        <div className="flex flex-col gap-8 rounded-2xl border border-gray-200 p-5">
-          <div className="w-full md:w-1/4">
-            <label className="font-semibold text-[var(--primary-color)]">
-              Quarter
-            </label>
-            <select
-              name="quarter"
-              id="quarter"
-              className="mt-1 block h-[38px] w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 focus:outline-none"
-              // value={searchParams.quarter}
-              // onChange={(e) =>
-              //   common.handleSearchInputChange(e, setSearchParams)
-              // }
-            >
-              <option value="">Select Quarter</option>
-              {Quarter &&
-                Quarter.length > 0 &&
-                Quarter.map((quarter, index) => {
-                  return (
-                    <option key={index} value={quarter}>
-                      {quarter}
-                    </option>
-                  );
-                })}
-            </select>
-          </div>
+  const [searchParams, setSearchParams] = useState({
+    fy: "",
+    month: "",
+    quarter: "",
+    typeOfFile: "",
+  });
+
+  return (
+    <div className="space-y-5">
+      <h1 className="mb-4 text-[25px] font-bold">Setting</h1>
+
+      <div className="flex items-end justify-between gap-4">
+        <div className="flex w-full gap-5">
+          <FilterSelect
+            label="Financial Year"
+            name="financialYear"
+            options={financialYear}
+            value={searchParams.fy || crtFy}
+            // onChange={handleSearchParamChange}
+          />
+          <FilterSelect
+            label="Month"
+            name="month"
+            options={Month}
+            value={searchParams.month || crtMonth?.toUpperCase()}
+            // onChange={handleSearchParamChange}
+          />
+          <FilterSelect
+            label="Quarter"
+            name="quarter"
+            options={Quarter}
+            value={searchParams.quarter || crtQuarter}
+            // onChange={handleSearchParamChange}
+          />
+          <FilterSelect
+            label="Type of file"
+            name="typeOfFile"
+            options={typeOfFile}
+            value={searchParams.typeOfFile}
+            onChange={common.handleSearchInputChange}
+          />
         </div>
       </div>
-    </>
+      {/* Working File Folder */}
+      <div className="w-full">
+        <label className="font-semibold text-[var(--primary-color)]">
+          Working File Folder
+        </label>
+        <input
+          disabled
+          type="text"
+          name="branchName"
+          id="branchName"
+          value={workingFileBasePath}
+          className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 file:mr-3 file:cursor-pointer focus:outline-none"
+        />
+      </div>
+    </div>
   );
 };
 

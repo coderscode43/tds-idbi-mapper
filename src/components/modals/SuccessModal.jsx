@@ -1,4 +1,5 @@
-import statusContext from "@/context/statusContext";
+
+import statusContext from "@/context/ModalsContext/statusContext";
 import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 import { useContext } from "react";
 
@@ -11,7 +12,7 @@ const SuccessModal = () => {
   return (
     <div
       className={`bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${
-        successModal ? "visible opacity-100" : "invisible opacity-0"
+        successModal ? "visible opacity-100" : "invisible opacity-50"
       }`}
     >
       <div className="relative w-full max-w-[17rem] rounded-2xl bg-white px-4 pt-8 pb-6 shadow-xl transition-all">
