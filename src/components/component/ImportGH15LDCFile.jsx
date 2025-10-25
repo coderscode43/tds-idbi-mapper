@@ -5,7 +5,7 @@ import { errorMessage } from "@/lib/utils";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportRawFiles = () => {
+const ImportGH15LDCFile = () => {
   const entity = "ImportDeductee";
 
   const { params } = useParams();
@@ -34,32 +34,62 @@ const ImportRawFiles = () => {
       console.error(error);
     }
   };
-
   return (
     <>
       {/* Import File Section */}
-      <div className="flex items-end gap-5 rounded-md border border-gray-100 p-5 shadow-md focus:outline-none">
-        <div>
-          <label className="font-medium text-[var(--primary-color)]">
-            Select Folder
-          </label>
-          <input
-            type="file"
-            name="branchName"
-            id="branchName"
-            className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 file:mr-3 file:cursor-pointer focus:outline-none"
-          />
+      <div className="flex rounded-md border border-gray-100 shadow-lg">
+        <div className="w-full flex-col items-end gap-5 p-5 focus:outline-none">
+          <div className="space-y-5">
+            <h4 className="mb-4 text-[17px] font-semibold">
+              Import 15 GH File
+            </h4>
+          </div>
+
+          <div>
+            <label className="font-medium text-[var(--primary-color)]">
+              Select Folder
+            </label>
+            <input
+              type="file"
+              name="branchName"
+              id="branchName"
+              className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 file:mr-3 file:cursor-pointer focus:outline-none"
+            />
+          </div>
+          <button className="btnBorder lightCyan btn mt-3">
+            <img
+              className="h-[30px] w-[35px] mix-blend-multiply"
+              src={"/images/gificons/importFile.gif"}
+              alt="Import"
+            />
+            <span>Import 15GH File</span>
+          </button>
         </div>
-        <button className="btnBorder lightCyan btn">
-          <img
-            className="h-[35px] w-[35px] mix-blend-multiply"
-            src={"/images/gificons/importFile.gif"}
-            alt="Import"
-          />
-          <span>Import</span>
-        </button>
+        <div className="w-full flex-col items-end gap-5 p-5 focus:outline-none">
+          <div className="space-y-5">
+            <h4 className="mb-4 text-[17px] font-semibold">Import LDC File</h4>
+          </div>
+          <div>
+            <label className="text-[var(--primary-color)]">Select Folder</label>
+            <input
+              type="file"
+              name="branchName"
+              id="branchName"
+              className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 file:mr-3 file:cursor-pointer focus:outline-none"
+            />
+          </div>
+          <button className="btnBorder lightCyan btn mt-3">
+            <img
+              className="h-[30px] w-[35px] mix-blend-multiply"
+              src={"/images/gificons/importFile.gif"}
+              alt="Import"
+            />
+            <span>Import LDC File</span>
+          </button>
+        </div>
       </div>
-      {/* Buttons Section  */}
+
+      {/* Button Section */}
       <div className="mt-5 rounded-md border border-gray-100 shadow-md">
         <div className="flex justify-between gap-4 p-5">
           {/* GL Reconciliation Button  */}
@@ -133,42 +163,10 @@ const ImportRawFiles = () => {
               Validate & Generate Format File
             </span>
           </button>
-          {/* Launch Refund & Recovery Excel */}
-          {/* <button
-          className="btnBorder Green btn"
-          onClick={() =>
-            handleProcessButtonClick("LaunchRefundAndRecoveryExcel")
-          }
-        >
-          <img
-            src={"/images/gificons/launchTemplate.gif"}
-            alt="Launch Icon"
-            className="h-[30px] w-[35px] mix-blend-multiply"
-          />
-          <span className="btntext text-[16px]">
-            Launch Refund & Recovery Excel
-          </span>
-        </button> */}
-          {/* Validate Data & Segregate Data */}
-          {/* <button
-          className="btnBorder DarkGreen btn"
-          onClick={() =>
-            handleProcessButtonClick("ValidateDataAndSegregateData")
-          }
-        >
-          <img
-            src={"/images/gificons/ValidateExcel.gif"}
-            alt="Search Icon"
-            className="h-7 mix-blend-multiply"
-          />
-          <span className="btntext text-[16px]">
-            Validate Data & Segregate Data
-          </span>
-        </button> */}
         </div>
       </div>
     </>
   );
 };
 
-export default ImportRawFiles;
+export default ImportGH15LDCFile;

@@ -5,7 +5,7 @@ import { errorMessage } from "@/lib/utils";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportRawFiles = () => {
+const ImportRefundData = () => {
   const entity = "ImportDeductee";
 
   const { params } = useParams();
@@ -34,7 +34,6 @@ const ImportRawFiles = () => {
       console.error(error);
     }
   };
-
   return (
     <>
       {/* Import File Section */}
@@ -133,42 +132,10 @@ const ImportRawFiles = () => {
               Validate & Generate Format File
             </span>
           </button>
-          {/* Launch Refund & Recovery Excel */}
-          {/* <button
-          className="btnBorder Green btn"
-          onClick={() =>
-            handleProcessButtonClick("LaunchRefundAndRecoveryExcel")
-          }
-        >
-          <img
-            src={"/images/gificons/launchTemplate.gif"}
-            alt="Launch Icon"
-            className="h-[30px] w-[35px] mix-blend-multiply"
-          />
-          <span className="btntext text-[16px]">
-            Launch Refund & Recovery Excel
-          </span>
-        </button> */}
-          {/* Validate Data & Segregate Data */}
-          {/* <button
-          className="btnBorder DarkGreen btn"
-          onClick={() =>
-            handleProcessButtonClick("ValidateDataAndSegregateData")
-          }
-        >
-          <img
-            src={"/images/gificons/ValidateExcel.gif"}
-            alt="Search Icon"
-            className="h-7 mix-blend-multiply"
-          />
-          <span className="btntext text-[16px]">
-            Validate Data & Segregate Data
-          </span>
-        </button> */}
         </div>
       </div>
     </>
   );
 };
 
-export default ImportRawFiles;
+export default ImportRefundData;

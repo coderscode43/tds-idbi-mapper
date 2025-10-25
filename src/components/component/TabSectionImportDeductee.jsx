@@ -3,19 +3,20 @@ import { refinedSearchParams } from "@/lib/utils";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import ImportGH15LDCFile from "./ImportGH15LDCFile";
+import ImportGLFiles from "./ImportGLFiles";
 import ImportRawFiles from "./ImportRawFiles";
+import ImportRefundData from "./ImportRefundData";
 
 const categories = [
   { name: "Import Raw Files", panelName: "ImportRawFiles" },
   { name: "Import GL Files", panelName: "ImportGLFiles" },
-  { name: "Import GH15 File", panelName: "ImportGH15File" },
-  { name: "Import LDC Files", panelName: "ImportLDCFiles" },
-  {
-    name: "Import Refund & Recovery File",
-    panelName: "ImportRefundRecoveryFile",
-  },
-  { name: "Latest Updated PAN", panelName: "LatestUpdatedPAN" },
+  { name: "Import GH15 & LDC File", panelName: "ImportGH15AndLDCFile" },
+  { name: "Import Refund Data", panelName: "ImportRefundData" },
+  { name: "Import PAN Details", panelName: "ImportPanDetails" },
+  { name: "Import Customer Details", panelName: "ImportCustomerDetails" },
 ];
+
 const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
   const navigate = useNavigate();
 
@@ -68,11 +69,24 @@ const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
         </TabList>
 
         <TabPanels className="mt-3">
-          {categories?.map(({ panelName }) => (
-            <TabPanel key={panelName} className="">
-              <ImportRawFiles />
-            </TabPanel>
-          ))}
+          <TabPanel>
+            <ImportRawFiles />
+          </TabPanel>
+          <TabPanel>
+            <ImportGLFiles />
+          </TabPanel>
+          <TabPanel>
+            <ImportGH15LDCFile />
+          </TabPanel>
+          <TabPanel>
+            <ImportRefundData />
+          </TabPanel>
+          <TabPanel>
+            <ImportRawFiles />
+          </TabPanel>
+          <TabPanel>
+            <ImportRawFiles />
+          </TabPanel>
         </TabPanels>
       </TabGroup>
     </>

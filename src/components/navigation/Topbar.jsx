@@ -1,6 +1,10 @@
+// import { useContext } from "react";
 import DropdownMenu from "../component/DropdownMenu";
+// import staticDataContext from "@/context/staticDataContext";
 
 const TopBar = ({ handleSideBar }) => {
+  // const { ClientName, ClientPAN } = useContext(staticDataContext);
+
   return (
     <div className="sticky top-0 z-10">
       <header className="bg-white" style={{ boxShadow: "black 0px 0px 15px" }}>
@@ -17,13 +21,12 @@ const TopBar = ({ handleSideBar }) => {
               />
             </div>
           </div>
-          <div className="mr-[90px]">
-             <h1 className="text-xl font-bold text-[var(--primary-color)]">
-              R J SONI and Associates - ABCDE1234A
+          {/* <div className="mr-[90px]">
+            <h1 className="text-xl font-bold text-[var(--primary-color)]">
+              {ClientName} - {ClientPAN}
             </h1>
-          </div>
+          </div> */}
           <div className="flex items-center justify-center gap-5">
-           
             <div>
               <DropdownMenu />
             </div>

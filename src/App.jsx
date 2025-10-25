@@ -10,6 +10,7 @@ import PageNotFound from "./components/component/PageNotFound";
 import AppLayout from "./layout/AppLayout";
 import ImportDeducteeDetails from "./pages/ImportDeducteeDetails";
 import SettingPage from "./pages/SettingPage";
+import WithDrawal from "./pages/WithDrawal";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -23,6 +24,7 @@ const App = () => {
             path="listSearch/importDeducteeDetails/:params"
             element={<ImportDeducteeDetails />}
           />
+          <Route path="listSearch/withDrawal/:params" element={<WithDrawal />} />
           <Route path="list/settings" element={<SettingPage />} />
         </Route>
 

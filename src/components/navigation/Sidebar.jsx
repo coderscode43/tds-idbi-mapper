@@ -12,6 +12,12 @@ const navItems = [
     iconClass: "fa-solid fa-file-import",
   },
   {
+    id: "withDrawal",
+    label: "WithDrawal",
+    page: "withDrawal",
+    iconClass: "fa-solid fa-money-check-dollar",
+  },
+  {
     id: "settings",
     label: "Settings",
     page: "settings",
@@ -48,7 +54,7 @@ const Sidebar = ({ sideBarOpen }) => {
                   <li key={id}>
                     <NavLink
                       to={
-                        id === "importDeducteeDetails"
+                        id !== "settings"
                           ? `/home/listSearch/${page}/${refinedParams}`
                           : `/home/list/${page}`
                       }

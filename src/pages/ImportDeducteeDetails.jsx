@@ -202,7 +202,7 @@ const ImportDeducteeDetails = () => {
               />
               <span className="btntext text-[16px]">Open Folder</span>
             </button>
-            <button className="btnBorder DarkGreen btn">
+            <button className="btnBorder Green btn">
               <img
                 src={"/images/gificons/refresh.gif"}
                 alt="Export to Excel Button"
@@ -226,7 +226,7 @@ const ImportDeducteeDetails = () => {
               </h1>
               <p>Track all the actions and their status</p>
             </div>
-            <button className="btnBorder DarkGreen btn" onClick={fetchListData}>
+            <button className="btnBorder Green btn" onClick={fetchListData}>
               <img
                 src={"/images/gificons/refresh.gif"}
                 alt="Export to Excel Button"
