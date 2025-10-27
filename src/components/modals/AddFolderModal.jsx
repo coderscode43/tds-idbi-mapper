@@ -1,5 +1,6 @@
 import common from "@/common/common";
-import { useState } from "react";
+import statusContext from "@/context/ModalsContext/statusContext";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const AddFolderModal = ({
@@ -8,6 +9,7 @@ const AddFolderModal = ({
   closeAddFolderModal,
 }) => {
   const { params } = useParams();
+  const { showError, showOverride } = useContext(statusContext);
 
   const [selectedFolder, setSelectedFolder] = useState(null);
 
@@ -20,47 +22,54 @@ const AddFolderModal = ({
     }
   };
 
- const handleAddFolder = async () => {
-  // Stop if no folder is selected
-  if (!selectedFolder) return;
+  const handleAddFolder = async (overrideValue = "") => {
+    // Stop if no folder is selected
+    if (!selectedFolder) return;
 
-  try {
-    // Parse extra params if provided
-    const parsedParams = params ? JSON.parse(params) : {};
+    try {
+      // Parse extra params if provided
+      const parsedParams = params ? JSON.parse(params) : {};
 
-    // Add base form data fields
-    const formData = { ...parsedParams, OverideFile: "" };
+      // Add base form data fields
+      const formData = { ...parsedParams, OverideFile: overrideValue };
 
-    // Get current folder path or default to root
-    const lastLocation = fileListData[0]?.lastLocation || "/";
+      // Get current folder path or default to root
+      const lastLocation = fileListData[0]?.lastLocation || "/";
 
-    // Convert FileList to array
-    const fileBlob = [...selectedFolder];
+      // Convert FileList to array
+      const fileBlob = [...selectedFolder];
 
-    // Create FormData for upload
-    const formDataObj = new FormData();
-    formDataObj.append("formData", JSON.stringify(formData));
-    formDataObj.append("blob", fileBlob);
-    formDataObj.append("lastLocation", lastLocation);
+      // Create FormData for upload
+      const formDataObj = new FormData();
+      formDataObj.append("formData", JSON.stringify(formData));
+      console.log("params:", params);
+      formDataObj.append("blob", fileBlob);
+      formDataObj.append("lastLocation", lastLocation);
 
-    // Append each file and its relative path
-    Array.from(selectedFolder).forEach((file) => {
-      if (!file) throw new Error("File is undefined");
-      formDataObj.append("blob", file);
-      formDataObj.append("filePath", file.webkitRelativePath);
-    });
+      // Append each file and its relative path
+      Array.from(selectedFolder).forEach((file) => {
+        if (!file) throw new Error("File is undefined");
+        formDataObj.append("blob", file);
+        formDataObj.append("filePath", file.webkitRelativePath);
+      });
 
-    // Upload folder to backend
-    const response = await common.getAddFolder(formDataObj);
+      // Upload folder to backend
+      const response = await common.getAddFolder(formDataObj);
 
-    // Update table and close modal
-    setFileListData(response?.data?.entities);
-    closeAddFolderModal();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
+      // Update table and close modal
+      setFileListData(response?.data?.entities);
+      closeAddFolderModal();
+    } catch (error) {
+      console.error(error);
+      if (error.response.data.message === "Override") {
+        showOverride(error?.response?.data?.exceptionMsg, () =>
+          handleAddFolder("YES")
+        );
+      } else {
+        showError(error.data.exceptionMsg);
+      }
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/40">
@@ -102,7 +111,7 @@ const AddFolderModal = ({
             <i className="fa-solid fa-xmark"></i> <span>Cancel</span>
           </button>
           <button
-            onClick={handleAddFolder}
+            onClick={() => handleAddFolder()}
             disabled={!selectedFolder}
             className={`flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-white transition ${
               selectedFolder

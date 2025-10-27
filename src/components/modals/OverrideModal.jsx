@@ -3,7 +3,7 @@ import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 import { useContext } from "react";
 
 const OverrideModal = () => {
-  const { overrideModal, setOverrideModal, overrideMessage } =
+  const { overrideModal, setOverrideModal, overrideMessage, retryAction } =
     useContext(statusContext);
 
   useLockBodyScroll(overrideModal);
@@ -15,13 +15,10 @@ const OverrideModal = () => {
       }`}
     >
       <div className="relative w-full max-w-[20rem] rounded-2xl bg-white px-4 pt-8 pb-6 shadow-xl transition-all">
-        {/* Header with image */}
         <div className="flex flex-col items-center justify-center gap-2">
-          <i className="fa-solid fa-circle-xmark text-5xl text-red-600"></i>
-          <p className="text-2xl font-medium">Error</p>
+          <i className="fa-solid fa-circle-exclamation text-5xl text-amber-500"></i>
+          <p className="text-2xl font-medium">Warning </p>
         </div>
-
-        {/* Error message */}
         <div className="relative pt-3 pb-6 text-center text-gray-600">
           {typeof errorMessage !== "object"
             ? overrideMessage.charAt(0).toUpperCase() + overrideMessage.slice(1)
@@ -34,7 +31,7 @@ const OverrideModal = () => {
             onClick={() => {
               setOverrideModal(false);
             }}
-            className="mx-2 w-full cursor-pointer rounded-lg bg-blue-600 py-2 font-medium text-white hover:bg-blue-700"
+            className="mx-2 w-full cursor-pointer rounded-lg bg-blue-500 py-2 font-medium text-white"
           >
             No
           </button>
@@ -42,8 +39,9 @@ const OverrideModal = () => {
           <button
             onClick={() => {
               setOverrideModal(false);
+              retryAction("YES");
             }}
-            className="mx-2 w-full cursor-pointer rounded-lg bg-[#d40008] py-2 font-medium text-white hover:bg-red-600"
+            className="mx-2 w-full cursor-pointer rounded-lg bg-red-500 py-2 font-medium text-white"
           >
             Yes
           </button>

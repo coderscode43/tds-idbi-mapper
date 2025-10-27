@@ -111,7 +111,7 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
   return (
     <>
       <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/40">
-        <div className="w-full max-w-6xl overflow-hidden rounded-lg bg-white shadow-lg">
+        <div className="w-full max-w-5xl overflow-hidden rounded-lg bg-white shadow-lg">
           {/* Header */}
           <div className="flex items-center justify-between bg-blue-100 px-6 py-4">
             <h2 className="text-lg font-semibold text-gray-800">

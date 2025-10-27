@@ -202,14 +202,6 @@ const ImportDeducteeDetails = () => {
               />
               <span className="btntext text-[16px]">Open Folder</span>
             </button>
-            <button className="btnBorder Green btn">
-              <img
-                src={"/images/gificons/refresh.gif"}
-                alt="Export to Excel Button"
-                className="h-7 mix-blend-multiply"
-              />
-              <span className="w-full text-[16px]">Refresh</span>
-            </button>
           </div>
         </div>
 
