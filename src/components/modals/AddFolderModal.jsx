@@ -20,20 +20,47 @@ const AddFolderModal = ({
     }
   };
 
-  const handleAddFolder = async () => {
-    if (!selectedFolder) return;
-    try {
-      const response = await common.getAddFolder(
-        params,
-        fileListData,
-        selectedFolder
-      );
-      setFileListData(response?.data?.entities);
-      closeAddFolderModal();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+ const handleAddFolder = async () => {
+  // Stop if no folder is selected
+  if (!selectedFolder) return;
+
+  try {
+    // Parse extra params if provided
+    const parsedParams = params ? JSON.parse(params) : {};
+
+    // Add base form data fields
+    const formData = { ...parsedParams, OverideFile: "" };
+
+    // Get current folder path or default to root
+    const lastLocation = fileListData[0]?.lastLocation || "/";
+
+    // Convert FileList to array
+    const fileBlob = [...selectedFolder];
+
+    // Create FormData for upload
+    const formDataObj = new FormData();
+    formDataObj.append("formData", JSON.stringify(formData));
+    formDataObj.append("blob", fileBlob);
+    formDataObj.append("lastLocation", lastLocation);
+
+    // Append each file and its relative path
+    Array.from(selectedFolder).forEach((file) => {
+      if (!file) throw new Error("File is undefined");
+      formDataObj.append("blob", file);
+      formDataObj.append("filePath", file.webkitRelativePath);
+    });
+
+    // Upload folder to backend
+    const response = await common.getAddFolder(formDataObj);
+
+    // Update table and close modal
+    setFileListData(response?.data?.entities);
+    closeAddFolderModal();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
   return (
     <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/40">

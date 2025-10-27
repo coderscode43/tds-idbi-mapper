@@ -87,7 +87,7 @@ const ImportDeducteeDetails = () => {
 
     try {
       const entity = "WorkingFile";
-      const parsedParams = JSON.parse(); // parse URL params
+      const parsedParams = JSON.parse(params); // parse URL params
       const clientPAN = ClientPAN;
       // Combine params to form request data
       const formData = {
@@ -218,7 +218,7 @@ const ImportDeducteeDetails = () => {
           setSearchParams={setSearchParams}
         />
 
-        <div className="flex flex-col gap-6 rounded-md border border-gray-100 p-5 shadow-lg">
+        <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <h1 className="text-lg font-semibold text-[var(--primary-color)]">

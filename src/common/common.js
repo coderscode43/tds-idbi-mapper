@@ -2,6 +2,7 @@ import {
   addFileInFolder,
   addFolder,
   createFolder,
+  downloadFile,
   fileList,
   gotoFolder,
   gotoLastLocation,
@@ -32,27 +33,7 @@ const common = {
     return await fileList(entity, formData);
   },
 
-  getAddFolder: async (params, fileListData, selectedFolder) => {
-    const parsedParams = params ? JSON.parse(params) : {};
-    const formData = {
-      ...parsedParams,
-      OverideFile: "",
-    };
-
-    const lastLocation = fileListData[0]?.lastLocation || "/";
-    const fileBlob = [...selectedFolder];
-
-    const formDataObj = new FormData();
-    formDataObj.append("formData", JSON.stringify(formData));
-    formDataObj.append("blob", fileBlob);
-    formDataObj.append("lastLocation", lastLocation);
-
-    Array.from(selectedFolder).forEach((file) => {
-      if (!file) throw new Error("File is undefined");
-      formDataObj.append("blob", file);
-      formDataObj.append("filePath", file.webkitRelativePath);
-    });
-
+  getAddFolder: async (formDataObj) => {
     return await addFolder(formDataObj);
   },
 
@@ -110,6 +91,10 @@ const common = {
 
   getPaginationWithSearch: async (entity, pageNo, searchParams) => {
     return await paginationWithSearchListData(entity, pageNo - 1, searchParams);
+  },
+
+  getDownloadFile: async (filePath) => {
+    return await downloadFile(filePath);
   },
 };
 

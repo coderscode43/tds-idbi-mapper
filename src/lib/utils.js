@@ -36,6 +36,8 @@ export const dateWithTime = (d) => {
 export const date = (d) =>
   !d ? "" : new Date(d).toLocaleDateString("en-GB").replace(/\//g, "-");
 
+export const fileSize = (value) => (value === 0 ? null : `${value}`);
+
 export const refinedSearchParams = (searchParams) => {
   const refinedSearchParams = (obj) =>
     Object.fromEntries(
@@ -61,4 +63,27 @@ export const refinedSearchParams = (searchParams) => {
     );
 
   return JSON.stringify(refinedSearchParams(searchParams));
+};
+
+
+export const anyFileDownload = (response) => {
+  // Try to get filename from Content-Disposition
+  let fileName = "export.xlsx";
+  const cd = response.headers["content-disposition"];
+  if (cd) {
+    const match = cd.match(/filename\*=UTF-8''([^;]+)|filename="?([^"]+)"?/i);
+    if (match) fileName = decodeURIComponent(match[1] || match[2]);
+  }
+
+  const blob = new Blob([response.data], {
+    type: response.headers["content-type"],
+  });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", fileName); // use filename as passed in
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(url);
 };

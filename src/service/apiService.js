@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Type } from "lucide-react";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL ?? "/";
 axios.defaults.withCredentials = true;
@@ -102,5 +103,12 @@ export const gotoLastLocation = async (lastLocation, lastPart) => {
 
 export const startProcess = async (entity, formData) => {
   const response = await axios.post(`api${entity}/startProcess`, formData);
+  return response;
+};
+
+export const downloadFile = async (filepath) => {
+  const response = await axios.get(`apiWorkingFile/downloadFile/${filepath}`, {
+    responseType: "blob",
+  });
   return response;
 };

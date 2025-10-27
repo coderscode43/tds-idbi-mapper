@@ -1,11 +1,20 @@
 import common from "@/common/common";
-import { useState } from "react";
+import statusContext from "@/context/ModalsContext/statusContext";
+import {
+  anyFileDownload,
+  dateWithTime,
+  errorMessage,
+  fileSize,
+} from "@/lib/utils";
+import { useContext, useState } from "react";
 import DynamicTableCheckBoxAction from "../tables/DynamicTableCheckBoxAction";
 import AddDocumentModal from "./AddDocumentModal";
 import AddFolderModal from "./AddFolderModal";
 import CreateFolderModal from "./CreateFolderModal";
 
 const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
+  const { showSuccess, showError } = useContext(statusContext);
+  // const [selectedRows, setSelectedRows] = useState([]);
   const [showAddFolderModal, setShowAddFolderModal] = useState(false);
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
@@ -14,9 +23,9 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
   const tableHead = [
     { key: "select", label: "Select" },
     { key: "name", label: "File Name" },
-    { key: "lastModified", label: "Last Modified" },
+    { key: "lastModified", label: "Last Modified", formatter: dateWithTime },
     { key: "fileType", label: "File Type" },
-    { key: "size", label: "File Size" },
+    { key: "size", label: "File Size", formatter: fileSize },
     { key: "action", label: "Action" },
   ];
 
@@ -40,6 +49,26 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
       setFileListData(response?.data?.entities);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleTableDownload = async (data) => {
+    try {
+      // Construct the file path with proper slashes
+      const lastLocation = `${data.lastLocation}/${data.name}`;
+      // Replace / with ^ (or any placeholder) since your backend replaces ^ back to /
+      const filePath = encodeURIComponent(lastLocation).replace(/%2F/g, "^");
+      const response = await common.getDownloadFile(filePath);
+
+      anyFileDownload(response);
+      showSuccess(response?.data?.succesMsg || "File Downloaded Successfully");
+      
+    } catch (error) {
+      showError(
+        `Cannot download.
+       ${error?.response?.data?.entityName || ""}
+       ${errorMessage(error)}`
+      );
     }
   };
 
@@ -104,6 +133,9 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
               tableHead={tableHead}
               tableData={fileListData}
               setFileListData={setFileListData}
+              handleDownload={handleTableDownload}
+              // selectedRows={selectedRows}
+              // onRowSelect={handleRowSelect}
             />
           </div>
 
@@ -113,7 +145,10 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
               <i className="fa-solid fa-file-zipper"></i>{" "}
               <span>Generate Zip</span>
             </button> */}
-            <button className="cursor-pointer space-x-1 rounded-md bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700">
+            <button
+              className="cursor-pointer space-x-1 rounded-md bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700"
+              // onClick={handleDelete}
+            >
               <i className="fa-solid fa-trash"></i> <span>Delete</span>
             </button>
             <button
