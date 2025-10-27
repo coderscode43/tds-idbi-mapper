@@ -170,7 +170,7 @@ const ImportDeducteeDetails = () => {
                 label="Type of file"
                 name="typeOfFile"
                 options={typeOfFile}
-                value={searchParams.typeOfFile}
+                value={typeOfFile}
                 onChange={common.handleSearchInputChange}
               />
             </div>

@@ -112,3 +112,14 @@ export const downloadFile = async (filepath) => {
   });
   return response;
 };
+
+export const fileDeleted = async (formDataObj) => {
+  const response = await axios.post(
+    `apiWorkingFile/deleteFileNFolder`,
+    formDataObj,
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  return response;
+};

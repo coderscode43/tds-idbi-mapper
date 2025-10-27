@@ -7,9 +7,67 @@ const DynamicTableCheckBoxAction = ({
   setFileListData,
   handleDownload,
   selectedRows,
-  onRowSelect,
+  setSelectedRows,
+  setSelectedRowsData,
 }) => {
   const [lastLocation] = tableData;
+
+  const isAllSelected =
+    tableData.length > 0 && selectedRows.length === tableData.length;
+
+  // Toggle all rows
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedRows(tableData.map((_, index) => index));
+      setSelectedRowsData(
+        tableData.map((row) => ({
+          ...row,
+          selected: true,
+        }))
+      );
+    } else {
+      setSelectedRows([]);
+      setSelectedRowsData([]);
+    }
+  };
+
+  // Toggle individual row
+  const handleSelectRow = (index, data) => {
+    const rowKey = data.name + data.lastLocation; // Unique key for each row
+
+    setSelectedRows((prevSelected) =>
+      prevSelected.includes(index)
+        ? prevSelected.filter((i) => i !== index)
+        : [...prevSelected, index]
+    );
+
+    setSelectedRowsData((prevData) => {
+      const isAlreadySelected = prevData.some(
+        (row) => row.name + row.lastLocation === rowKey
+      );
+
+      if (isAlreadySelected) {
+        return prevData.filter((row) => row.name + row.lastLocation !== rowKey);
+      } else {
+        return [...prevData, data];
+      }
+    });
+  };
+
+  // Inject a checkbox into table head
+  const enhancedTableHead = [
+    {
+      label: (
+        <input
+          type="checkbox"
+          onChange={handleSelectAll}
+          checked={isAllSelected}
+        />
+      ),
+      key: "__checkbox__",
+    },
+    ...tableHead,
+  ];
 
   return (
     <div className="relative w-full">
@@ -22,18 +80,22 @@ const DynamicTableCheckBoxAction = ({
                 style={{ zIndex: "9", position: "sticky", top: "0px" }}
               >
                 <tr>
-                  {tableHead?.map(({ label }, index) => (
+                  {enhancedTableHead.map(({ label }, index) => (
                     <th
                       key={index}
                       className={`z-0 border-r-[1.5px] border-l-[1.5px] bg-[var(--secondary-color)] p-2 whitespace-nowrap text-white ${
-                        index === 0
+                        index === enhancedTableHead.length - 1
+                          ? "border-[var(--secondary-color)]"
+                          : "border-gray-300"
+                      }${
+                        index === tableHead.length - 1
                           ? "border-l-[var(--secondary-color)]" // left border on first th
                           : "border-l-gray-300"
-                      } ${
+                      }${
                         index === tableHead.length - 1
                           ? "border-r-[var(--secondary-color)]" // right border on last th
                           : "border-r-gray-300"
-                      } `}
+                      }`}
                     >
                       <div className="block min-w-[70px] resize-x overflow-auto">
                         {label}
@@ -49,7 +111,7 @@ const DynamicTableCheckBoxAction = ({
                   Object.keys(lastLocation)[0] === "lastLocation") ? (
                   <tr>
                     <td
-                      colSpan={tableHead.length}
+                      colSpan={enhancedTableHead.length}
                       className="p-4 text-center text-[16px] font-semibold text-red-500"
                     >
                       No Files Added
@@ -57,34 +119,34 @@ const DynamicTableCheckBoxAction = ({
                   </tr>
                 ) : (
                   tableData?.map((data, index) => {
+                    const isChecked = selectedRows.includes(index);
                     return (
                       <tr
                         key={index}
-                        className={
-                          "cursor-pointer bg-white text-center hover:bg-gray-100"
-                        }
-                        // go inside the specific folder
+                        className={`cursor-pointer bg-white text-center hover:bg-gray-100 ${isChecked ? "bg-blue-100" : ""}`}
                         onDoubleClick={async () => {
                           const response = await common.getGotoFolder(data);
                           setFileListData(response?.data?.entities || []);
+                          setSelectedRows([]);
+                          setSelectedRowsData([]);
                         }}
                       >
+                        {/* Checkbox cell */}
+                        <td className="border-[1.5px] border-gray-300 p-2">
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => handleSelectRow(index, data)}
+                          />
+                        </td>
+
                         {tableHead?.map(({ key, formatter }, colIndex) => (
                           <td
                             key={colIndex}
                             className="w-auto border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap"
                           >
-                            {/* checkbox select logic */}
-                            {key === "select" ? (
-                              <input
-                                type="checkbox"
-                                name="select"
-                                id="select"
-                                checked={selectedRows.includes(data)}
-                                onChange={() => onRowSelect(data)}
-                              />
-                            ) : key === "action" &&
-                              data.fileType !== "File folder" ? (
+                            {key === "action" &&
+                            data.fileType !== "File folder" ? (
                               // download button Icon shown if the the filetype if filefolder
                               <i
                                 className="fa-solid fa-download cursor-pointer text-lg"

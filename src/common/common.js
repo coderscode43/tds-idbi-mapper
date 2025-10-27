@@ -3,6 +3,7 @@ import {
   addFolder,
   createFolder,
   downloadFile,
+  fileDeleted,
   fileList,
   gotoFolder,
   gotoLastLocation,
@@ -96,6 +97,10 @@ const common = {
   getDownloadFile: async (filePath) => {
     return await downloadFile(filePath);
   },
+
+  getFileDeleted:async (formDataObj) =>{
+    return await fileDeleted(formDataObj)
+  }
 };
 
 export default common;

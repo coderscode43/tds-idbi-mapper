@@ -7,31 +7,31 @@ import {
   fileSize,
 } from "@/lib/utils";
 import { useContext, useState } from "react";
+import ErrorMessage from "../component/ErrorMessage";
 import DynamicTableCheckBoxAction from "../tables/DynamicTableCheckBoxAction";
 import AddDocumentModal from "./AddDocumentModal";
 import AddFolderModal from "./AddFolderModal";
 import CreateFolderModal from "./CreateFolderModal";
 
 const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
+
   const { showSuccess, showError } = useContext(statusContext);
-  // const [selectedRows, setSelectedRows] = useState([]);
+
+  const [errors, setErrors] = useState({});
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRowsData, setSelectedRowsData] = useState([]);
   const [showAddFolderModal, setShowAddFolderModal] = useState(false);
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
 
   // Table Details
   const tableHead = [
-    { key: "select", label: "Select" },
     { key: "name", label: "File Name" },
     { key: "lastModified", label: "Last Modified", formatter: dateWithTime },
     { key: "fileType", label: "File Type" },
     { key: "size", label: "File Size", formatter: fileSize },
     { key: "action", label: "Action" },
   ];
-
-  const closeAddFolderModal = () => setShowAddFolderModal(false);
-  const closeAddDocumentModal = () => setShowAddDocumentModal(false);
-  const closeCreateFolderModal = () => setShowCreateFolderModal(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -56,19 +56,55 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
     try {
       // Construct the file path with proper slashes
       const lastLocation = `${data.lastLocation}/${data.name}`;
-      // Replace / with ^ (or any placeholder) since your backend replaces ^ back to /
+      // Replace / with ^ (or any placeholder) since backend replaces ^ back to /
       const filePath = encodeURIComponent(lastLocation).replace(/%2F/g, "^");
       const response = await common.getDownloadFile(filePath);
 
       anyFileDownload(response);
       showSuccess(response?.data?.succesMsg || "File Downloaded Successfully");
-      
     } catch (error) {
       showError(
         `Cannot download.
        ${error?.response?.data?.entityName || ""}
        ${errorMessage(error)}`
       );
+    }
+  };
+
+  console.log(selectedRowsData);
+
+  const validate = () => {
+    const newErrors = {};
+    let isValid = true;
+
+    // Validate checkbox selection
+    if (selectedRows.length === 0) {
+      newErrors.selectedRows = "Please select at least one checkbox.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+    // Construct the file path with proper slashes
+    const lastLocation = `${selectedRowsData[0]?.lastLocation}`;
+    const formData = {
+      entity: {
+        deleteFileOrFolder: selectedRowsData,
+      },
+      lastLocation: lastLocation,
+    };
+    try {
+      const response = await common.getFileDeleted(JSON.stringify(formData));
+      setFileListData(response?.data?.entities || []);
+      showSuccess(response.data.successMsg);
+    } catch (error) {
+      showError(errorMessage(error));
     }
   };
 
@@ -132,22 +168,26 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
             <DynamicTableCheckBoxAction
               tableHead={tableHead}
               tableData={fileListData}
-              setFileListData={setFileListData}
-              handleDownload={handleTableDownload}
-              // selectedRows={selectedRows}
-              // onRowSelect={handleRowSelect}
+              setFileListData={setFileListData} //for going inside the table
+              selectedRows={selectedRows}
+              setSelectedRows={setSelectedRows}
+              setSelectedRowsData={setSelectedRowsData}
+              handleDownload={handleTableDownload} // fro downloading the file
             />
+            {errors && errors.selectedRows && (
+              <ErrorMessage error={errors.selectedRows} />
+            )}
           </div>
 
           {/* Footer Buttons */}
           <div className="flex justify-end gap-3 bg-blue-100 px-6 py-4">
-            {/* <button className="cursor-pointer space-x-1 rounded-md bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700">
+            <button className="cursor-pointer space-x-1 rounded-md bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700">
               <i className="fa-solid fa-file-zipper"></i>{" "}
               <span>Generate Zip</span>
-            </button> */}
+            </button>
             <button
               className="cursor-pointer space-x-1 rounded-md bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700"
-              // onClick={handleDelete}
+              onClick={handleDelete}
             >
               <i className="fa-solid fa-trash"></i> <span>Delete</span>
             </button>
@@ -165,7 +205,7 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
         <AddFolderModal
           fileListData={fileListData}
           setFileListData={setFileListData}
-          closeAddFolderModal={closeAddFolderModal}
+          closeAddFolderModal={() => setShowAddFolderModal(false)}
         />
       )}
 
@@ -173,7 +213,7 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
         <AddDocumentModal
           fileListData={fileListData}
           setFileListData={setFileListData}
-          closeAddDocumentModal={closeAddDocumentModal}
+          closeAddDocumentModal={() => setShowAddDocumentModal(false)}
         />
       )}
 
@@ -181,7 +221,7 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
         <CreateFolderModal
           fileListData={fileListData}
           setFileListData={setFileListData}
-          closeCreateFolderModal={closeCreateFolderModal}
+          closeCreateFolderModal={() => setShowCreateFolderModal(false)}
         />
       )}
     </>
