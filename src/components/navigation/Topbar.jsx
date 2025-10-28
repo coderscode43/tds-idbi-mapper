@@ -31,7 +31,7 @@ const TopBar = ({ isSidebarOpen, setSideBarOpen }) => {
             <div>
               <img
                 className="h-8 cursor-pointer object-contain"
-                src="/images/IDBI-Bank-logo.png"
+                src={`${import.meta.env.BASE_URL}images/IDBI-Bank-logo.png`}
                 alt="IDBI Logo"
               />
             </div>

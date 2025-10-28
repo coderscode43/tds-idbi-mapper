@@ -9,8 +9,8 @@ import ImportGLFiles from "./ImportGLFiles";
 import ImportGLFilesWithDrawal from "./ImportGLFilesWithDrawal";
 
 const categories = [
-  { name: "Daily Remitance", panelName: "DailyRemitance" },
-  { name: "Monthly Remitance", panelName: "MonthlyRemitance" },
+  { name: "Daily Remitance", panelName: "Daily Remitance" },
+  { name: "Monthly Remitance", panelName: "Monthly Remitance" },
 ];
 
 const DailyRemitanceCategories = [

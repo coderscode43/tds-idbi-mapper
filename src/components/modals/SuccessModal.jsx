@@ -1,4 +1,3 @@
-
 import statusContext from "@/context/ModalsContext/statusContext";
 import useLockBodyScroll from "@/hooks/useLockBodyScroll";
 import { useContext } from "react";
@@ -12,29 +11,39 @@ const SuccessModal = () => {
   return (
     <div
       className={`bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${
-        successModal ? "visible opacity-100" : "invisible opacity-50"
+        successModal ? "visible opacity-100" : "invisible opacity-0"
       }`}
     >
-      <div className="relative w-full max-w-[17rem] rounded-2xl bg-white px-4 pt-8 pb-6 shadow-xl transition-all">
-        {/* Header with image */}
-        <div className="flex flex-col items-center justify-center gap-2">
-          <i className="fa-solid fa-circle-check text-5xl text-green-600"></i>
-          <p className="text-2xl font-medium">Success</p>
-        </div>
+      <div
+        className={`relative w-full max-w-[17rem] transform rounded-3xl bg-blue-50 px-4 pt-10 pb-8 shadow-[inset_10px_10px_14px_3px_#ffffff,inset_-10px_-10px_14px_3px_#ffffff] transition-all duration-300 ease-out`}
+      >
+        <div>
+          {/* Green Check Circle */}
+          <div className="mx-auto flex h-18 w-18 items-center justify-center rounded-full bg-green-100">
+            <div className="mx-auto flex h-15 w-15 items-center justify-center rounded-full bg-green-200">
+              <i className="fa-solid fa-circle-check rounded-full bg-white text-5xl text-green-500/95"></i>
+            </div>
+          </div>
 
-        {/* Success message */}
-        <div className="relative pt-3 pb-6 text-center text-gray-600">
-          {successMessage}
-        </div>
+          {/* Title */}
+          <h2 className="mt-4 text-center text-2xl font-medium text-gray-800">
+            Success!
+          </h2>
 
-        {/* Footer */}
-        <div className="flex w-full justify-center rounded-b-md">
-          <button
-            onClick={() => setSuccessModal(false)}
-            className="mx-2 w-full cursor-pointer rounded-lg bg-green-600 py-2 font-medium text-white hover:bg-green-500"
-          >
-            OK
-          </button>
+          {/* Message */}
+          <p className="mt-2 text-center text-gray-500">
+            {successMessage || "Successfully Completed"}
+          </p>
+
+          {/* Button */}
+          <div className="mt-6 flex justify-center">
+            <button
+              onClick={() => setSuccessModal(false)}
+              className="cursor-pointer rounded-3xl bg-green-500/95 px-8 py-2 font-medium text-white hover:bg-green-600"
+            >
+              Continue
+            </button>
+          </div>
         </div>
       </div>
     </div>

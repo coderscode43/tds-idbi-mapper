@@ -14,7 +14,6 @@ import AddFolderModal from "./AddFolderModal";
 import CreateFolderModal from "./CreateFolderModal";
 
 const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
-
   const { showSuccess, showError } = useContext(statusContext);
 
   const [errors, setErrors] = useState({});
@@ -42,10 +41,8 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
   const handleBack = async () => {
     const lastLocation = fileListData[0]?.lastLocation;
     const lastPart = lastLocation.substring(lastLocation.lastIndexOf("/") + 1);
-
     try {
       const response = await common.getGotoLastLocation(lastLocation, lastPart);
-      console.log(response);
       setFileListData(response?.data?.entities);
     } catch (error) {
       console.log(error);
@@ -59,7 +56,6 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
       // Replace / with ^ (or any placeholder) since backend replaces ^ back to /
       const filePath = encodeURIComponent(lastLocation).replace(/%2F/g, "^");
       const response = await common.getDownloadFile(filePath);
-
       anyFileDownload(response);
       showSuccess(response?.data?.succesMsg || "File Downloaded Successfully");
     } catch (error) {
@@ -71,8 +67,6 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
     }
   };
 
-  console.log(selectedRowsData);
-
   const validate = () => {
     const newErrors = {};
     let isValid = true;
@@ -82,7 +76,6 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
       newErrors.selectedRows = "Please select at least one checkbox.";
       isValid = false;
     }
-
     setErrors(newErrors);
     return isValid;
   };

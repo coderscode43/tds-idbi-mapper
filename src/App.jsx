@@ -24,14 +24,19 @@ const App = () => {
             path="listSearch/importDeducteeDetails/:params"
             element={<ImportDeducteeDetails />}
           />
-          <Route path="listSearch/withDrawal/:params" element={<WithDrawal />} />
+          <Route
+            path="listSearch/withDrawal/:params"
+            element={<WithDrawal />}
+          />
           <Route path="list/settings" element={<SettingPage />} />
         </Route>
 
         <Route path="*" element={<PageNotFound />} />
-        
       </>
-    )
+    ),
+    // {
+    //   basename: "/TDSMapper/",
+    // }
   );
   return <RouterProvider router={router} />;
 };

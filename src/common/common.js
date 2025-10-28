@@ -38,25 +38,7 @@ const common = {
     return await addFolder(formDataObj);
   },
 
-  getAddFileInFolder: async (params, fileListData, selectedDocument) => {
-    const parsedParams = params ? JSON.parse(params) : {};
-    const formData = {
-      ...parsedParams,
-      OverideFile: "",
-    };
-
-    const lastLocation = fileListData[0]?.lastLocation || "/";
-    const fileBlob = [...selectedDocument];
-
-    const formDataObj = new FormData();
-    formDataObj.append("formData", JSON.stringify(formData));
-    formDataObj.append("lastLocation", lastLocation);
-
-    Array.from(fileBlob).forEach((file) => {
-      if (!file) throw new Error("File is undefined");
-      formDataObj.append("blob", file);
-    });
-
+  getAddFileInFolder: async (formDataObj) => {
     return await addFileInFolder(formDataObj);
   },
 
@@ -98,9 +80,9 @@ const common = {
     return await downloadFile(filePath);
   },
 
-  getFileDeleted:async (formDataObj) =>{
-    return await fileDeleted(formDataObj)
-  }
+  getFileDeleted: async (formDataObj) => {
+    return await fileDeleted(formDataObj);
+  },
 };
 
 export default common;

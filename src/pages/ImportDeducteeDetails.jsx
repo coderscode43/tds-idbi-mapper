@@ -17,8 +17,16 @@ const ImportDeducteeDetails = () => {
   const navigate = useNavigate();
 
   // Data from context
-  const { crtFy, crtMonth, crtQuarter, Quarter, Month, ClientPAN, typeOfFile } =
-    useContext(staticDataContext);
+  const {
+    crtFy,
+    crtMonth,
+    crtQuarter,
+    Quarter,
+    Month,
+    ClientPAN,
+    typeOfFile,
+    financialYear,
+  } = useContext(staticDataContext);
   // const { showSuccess, showError } = useContext(statusContext);
 
   const [listData, setListData] = useState([]);
@@ -147,9 +155,9 @@ const ImportDeducteeDetails = () => {
             <div className="flex w-full gap-5">
               <FilterSelect
                 label="Financial Year"
-                name="fy"
-                options={[crtFy]}
-                value={searchParams.fy || crtFy}
+                name="financialYear"
+                options={financialYear}
+                value={crtFy}
                 onChange={handleSearchParamChange}
               />
               <FilterSelect

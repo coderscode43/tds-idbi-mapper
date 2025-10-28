@@ -1,5 +1,6 @@
 import common from "@/common/common";
-import React, { useState } from "react";
+import statusContext from "@/context/ModalsContext/statusContext";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const AddDocumentModal = ({
@@ -8,6 +9,8 @@ const AddDocumentModal = ({
   closeAddDocumentModal,
 }) => {
   const { params } = useParams();
+  const { showError, showOverride } = useContext(statusContext);
+
   const [selectedDocument, setSelectedDocument] = useState(null);
 
   const handleDocumentChange = (event) => {
@@ -19,18 +22,30 @@ const AddDocumentModal = ({
     }
   };
 
-  const handleAddDocumentFolder = async () => {
-    if (selectedDocument) {
-      try {
-        const response = await common.getAddFileInFolder(
-          params,
-          fileListData,
-          selectedDocument
+  const handleAddDocumentFolder = async (overrideValue = "") => {
+    if (!selectedDocument) return;
+    try {
+      const parsedParams = params ? JSON.parse(params) : {};
+      const formData = { ...parsedParams, OverideFile: overrideValue };
+
+      const lastLocation = fileListData[0]?.lastLocation || "/";
+      const fileBlob = [...selectedDocument];
+
+      const formDataObj = new FormData();
+      formDataObj.append("newDec", JSON.stringify(formData));
+      formDataObj.append("dec", lastLocation);
+      formDataObj.append("blob", fileBlob[0]);
+      const response = await common.getAddFileInFolder(formDataObj);
+
+      setFileListData(response?.data?.entities);
+      closeAddDocumentModal();
+    } catch (error) {
+      if (error?.response?.data?.message === "OverrideMsg") {
+        showOverride(error?.response?.data?.exceptionMsg, () =>
+          handleAddDocumentFolder("YES")
         );
-        setFileListData(response?.data?.entities);
-        closeAddDocumentModal();
-      } catch (error) {
-        console.error(error);
+      } else {
+        showError(error.response.data.exceptionMsg);
       }
     }
   };
@@ -56,8 +71,6 @@ const AddDocumentModal = ({
           </label>
           <input
             type="file"
-            // webkitdirectory="true"
-            // directory=""
             onChange={handleDocumentChange}
             className="w-full cursor-pointer rounded-md border border-gray-200 px-4 py-2 text-sm"
           />
@@ -75,7 +88,8 @@ const AddDocumentModal = ({
             <i className="fa-solid fa-xmark"></i> <span>Cancel</span>
           </button>
           <button
-            onClick={handleAddDocumentFolder}
+            type="button"
+            onClick={() => handleAddDocumentFolder()}
             disabled={!selectedDocument}
             className={`flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-white transition ${
               selectedDocument
