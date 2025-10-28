@@ -1,5 +1,5 @@
 import { LogOut, TriangleAlert, X } from "lucide-react";
-
+import { createPortal } from "react-dom";
 const DynamicModal = ({
   title,
   description,
@@ -8,7 +8,10 @@ const DynamicModal = ({
   closeModal,
   handler,
 }) => {
-  return (
+  const modalRoot = document.getElementById("modal-root");
+  if (!modalRoot || !isModalOpen) return null; // Prevent rendering if not needed
+
+  return createPortal(
     <div
       className={`fixed inset-0 z-20 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${
         isModalOpen ? "visible opacity-100" : "invisible opacity-0"
@@ -50,7 +53,8 @@ const DynamicModal = ({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    modalRoot
   );
 };
 

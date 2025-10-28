@@ -9,11 +9,9 @@ import { Outlet } from "react-router-dom";
 const AppLayout = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
-  const handleSideBar = () => setSideBarOpen((prev) => !prev);
-
   return (
     <>
-      <TopBar handleSideBar={handleSideBar} />
+      <TopBar setSideBarOpen={setSideBarOpen} isSidebarOpen={sideBarOpen} />
       <Sidebar sideBarOpen={sideBarOpen} />
       <SuccessModal />
       <ErrorModal />
