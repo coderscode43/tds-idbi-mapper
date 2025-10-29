@@ -123,3 +123,8 @@ export const fileDeleted = async (formDataObj) => {
   );
   return response;
 };
+
+export const processCancelled = async (processId) => {
+  const response = await axios.get(`apiProcessDetail/cancel/${processId}`);
+  return response;
+};

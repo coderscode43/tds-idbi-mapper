@@ -1,7 +1,7 @@
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
+import { Tooltip } from "../component/Tooltip";
 
-const DynamicTable = ({ tableHead, tableData }) => {
-
+const DynamicTable = ({ tableHead, tableData, handleCancel }) => {
   return (
     <div className="relative w-full">
       <div className="w-full overflow-clip rounded-md border border-gray-200">
@@ -56,9 +56,17 @@ const DynamicTable = ({ tableHead, tableData }) => {
                           key={colIndex}
                           className={`w-auto border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap`}
                         >
-                          {formatter
-                            ? formatter(data[key])
-                            : (data[key] ?? " ")}
+                          {key === "action" && data.status === "Pending" ? (
+                            // download button Icon shown if the the filetype if filefolder
+                            <i
+                              className="fa-solid fa-xmark cursor-pointer text-lg text-red-500"
+                              onClick={() => handleCancel(data)}
+                            ></i>
+                          ) : formatter ? (
+                            formatter(data[key])
+                          ) : (
+                            (data[key] ?? " ")
+                          )}
                         </td>
                       ))}
                     </tr>

@@ -5,7 +5,7 @@ import { errorMessage } from "@/lib/utils";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportRawFiles = () => {
+const ImportPanDetails = () => {
   const entity = "ImportDeductee";
 
   const { params } = useParams();
@@ -34,7 +34,6 @@ const ImportRawFiles = () => {
       console.error(error);
     }
   };
-
   return (
     <>
       {/* Import File Section */}
@@ -162,4 +161,4 @@ const ImportRawFiles = () => {
   );
 };
 
-export default ImportRawFiles;
+export default ImportPanDetails;

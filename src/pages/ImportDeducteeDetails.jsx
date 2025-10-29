@@ -2,11 +2,13 @@ import common from "@/common/common";
 import FilterSelect from "@/components/component/FilterSelect";
 import Pagination from "@/components/component/Pagination";
 import TabSectionImportDeductee from "@/components/component/TabSectionImportDeductee";
+import OpenAdditionalDetailFolder from "@/components/modals/OpenAdditionalDetailFolder";
 import OpenFolderModal from "@/components/modals/OpenFolderModal";
 import DynamicTable from "@/components/tables/DynamicTable";
+import statusContext from "@/context/ModalsContext/statusContext";
 import staticDataContext from "@/context/staticDataContext";
 import useLockBodyScroll from "@/hooks/useLockBodyScroll";
-import { dateWithTime, refinedSearchParams } from "@/lib/utils";
+import { dateWithTime, errorMessage, refinedSearchParams } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -21,13 +23,14 @@ const ImportDeducteeDetails = () => {
     crtFy,
     crtMonth,
     crtQuarter,
-    Quarter,
-    Month,
+    MonthList,
     ClientPAN,
     typeOfFile,
     financialYear,
+    dayList,
+    crtDay,
   } = useContext(staticDataContext);
-  // const { showSuccess, showError } = useContext(statusContext);
+  const { showSuccess, showError } = useContext(statusContext);
 
   const [listData, setListData] = useState([]);
   const [gotoPage, setGotoPage] = useState(1);
@@ -35,16 +38,25 @@ const ImportDeducteeDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [fileListData, setFileListData] = useState([]);
   const [showOpenFolderModal, setShowOpenFolderModal] = useState(false);
+  const [additionalDetailModal, setAdditionalDetailModal] = useState(false);
+
   const [searchParams, setSearchParams] = useState({
     fy: "",
     month: "",
     quarter: "",
     typeOfFile: "",
+    day: "",
     panelName: params?.panelName || "",
   });
 
   // Custom hook to lock body scroll. Prevent scrolling when modal is open
   useLockBodyScroll(showOpenFolderModal);
+
+  // Filter months based on selected quarter
+  const quarterToUse = searchParams.quarter || crtQuarter;
+  const filteredMonths = MonthList?.[quarterToUse] || [];
+
+  // const filteredMonths = searchParams.quarter ? MonthList?.[searchParams.quarter] : [];
 
   const fetchListData = async () => {
     try {
@@ -116,10 +128,12 @@ const ImportDeducteeDetails = () => {
   const handleSearchParamChange = (e) => {
     const { name, value } = e.target;
 
-    const updatedSearchParams = {
-      ...searchParams,
-      [name]: value,
-    };
+    let updatedSearchParams = { ...searchParams, [name]: value };
+
+    // If quarter changes, reset month to first month of that quarter
+    if (name === "quarter") {
+      updatedSearchParams.month = MonthList?.[value]?.[0] || ""; // default to first month
+    }
 
     setSearchParams(updatedSearchParams);
 
@@ -145,9 +159,43 @@ const ImportDeducteeDetails = () => {
     navigate(`/home/listSearch/importDeducteeDetails/${refinedParams}`);
   };
 
+  const handleAdditionalDetailModal = async () => {
+    setAdditionalDetailModal(true);
+    try {
+      const entity = "WorkingFile";
+      const parsedParams = JSON.parse(params); // parse URL params
+      const clientPAN = ClientPAN;
+      // Combine params to form request data
+      const formData = {
+        ...parsedParams,
+        pan: clientPAN,
+        pageName: pageName,
+        additionalFolder: "Additional Detail",
+      };
+      const refinedFormData = refinedSearchParams(formData);
+      const response = await common.getFileList(entity, refinedFormData);
+      setFileListData(response?.data || []);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleProcessCancel = async (data) => {
+    let processName = data?.processName;
+    let id = data?.id;
+    try {
+      const response = await common.getProcessCancel(id);
+      showSuccess(response.data.successMsg);
+    } catch (error) {
+      showError(
+        `Cannot terminate process ${processName.replace(/(?!^)([A-Z])/g, " $1")}: ${errorMessage(error)}`
+      );
+    }
+  };
+
   return (
     <>
-      <div className="space-y-5">
+      <div className="custom-scrollbar space-y-5">
         <h1 className="mb-4 text-[25px] font-bold">Import Deductee Details</h1>
 
         <div className="space-y-6 rounded-md border border-gray-100 p-5 shadow-lg">
@@ -163,17 +211,25 @@ const ImportDeducteeDetails = () => {
               <FilterSelect
                 label="Month"
                 name="month"
-                options={Month}
-                value={searchParams.month || crtMonth?.toUpperCase()}
-                onChange={handleSearchParamChange}
+                options={filteredMonths}
+                value={searchParams.month || crtMonth}
+                onChange={(value) =>
+                  handleSearchParamChange({ target: { name: "month", value } })
+                }
               />
+
               <FilterSelect
                 label="Quarter"
                 name="quarter"
-                options={Quarter}
+                options={Object.keys(MonthList || {})}
                 value={searchParams.quarter || crtQuarter}
-                onChange={handleSearchParamChange}
+                onChange={(value) =>
+                  handleSearchParamChange({
+                    target: { name: "quarter", value },
+                  })
+                }
               />
+
               <FilterSelect
                 label="Type of file"
                 name="typeOfFile"
@@ -181,6 +237,15 @@ const ImportDeducteeDetails = () => {
                 value={typeOfFile}
                 onChange={common.handleSearchInputChange}
               />
+              {params === "Daily Remitance" && (
+                <FilterSelect
+                  label="Date"
+                  name="date"
+                  options={dayList}
+                  value={crtDay}
+                  onChange={common.handleSearchInputChange}
+                />
+              )}
             </div>
           </div>
 
@@ -188,6 +253,7 @@ const ImportDeducteeDetails = () => {
             <button
               // disabled={selectFolder.length === 0}
               className="btnBorder lightYellow btn"
+              onClick={handleAdditionalDetailModal}
             >
               <img
                 src={"/images/gificons/openfile.gif"}
@@ -236,9 +302,9 @@ const ImportDeducteeDetails = () => {
             </button>
           </div>
           <DynamicTable
-            entity={pageName}
             tableHead={tableHead}
             tableData={tableData}
+            handleCancel={handleProcessCancel}
           />
         </div>
       </div>
@@ -260,6 +326,15 @@ const ImportDeducteeDetails = () => {
       {showOpenFolderModal && (
         <OpenFolderModal
           onClose={() => setShowOpenFolderModal(false)}
+          fileListData={fileListData}
+          setFileListData={setFileListData}
+        />
+      )}
+
+      {/* Additional Detail Modal */}
+      {additionalDetailModal && (
+        <OpenAdditionalDetailFolder
+          setAdditionalDetailModal={setAdditionalDetailModal}
           fileListData={fileListData}
           setFileListData={setFileListData}
         />

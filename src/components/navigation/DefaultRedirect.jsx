@@ -19,7 +19,7 @@ const DefaultRedirect = () => {
     fy: crtFy,
     month: crtMonth,
     quarter: crtQuarter,
-    panelName: "importRawFiles",
+    panelName: "Daily Remitance",
     pageName: "Import Deductee",
   };
 

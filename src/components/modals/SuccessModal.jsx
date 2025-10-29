@@ -15,7 +15,7 @@ const SuccessModal = () => {
       }`}
     >
       <div
-        className={`relative w-full max-w-[17rem] transform rounded-3xl bg-blue-50 px-4 pt-10 pb-8 shadow-[inset_10px_10px_14px_3px_#ffffff,inset_-10px_-10px_14px_3px_#ffffff] transition-all duration-300 ease-out`}
+        className={`relative w-full max-w-[20rem] transform rounded-3xl bg-white px-4 pt-10 pb-8 shadow-[inset_10px_10px_14px_3px_#ffffff,inset_-10px_-10px_14px_3px_#ffffff] transition-all duration-300 ease-out`}
       >
         <div>
           {/* Green Check Circle */}
@@ -39,7 +39,7 @@ const SuccessModal = () => {
           <div className="mt-6 flex justify-center">
             <button
               onClick={() => setSuccessModal(false)}
-              className="cursor-pointer rounded-3xl bg-green-500/95 px-8 py-2 font-medium text-white hover:bg-green-600"
+              className="w-3xs cursor-pointer rounded-3xl bg-green-500/95 px-11 py-2 font-medium text-white hover:bg-green-600"
             >
               Continue
             </button>

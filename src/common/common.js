@@ -9,6 +9,7 @@ import {
   gotoLastLocation,
   paginationListData,
   paginationWithSearchListData,
+  processCancelled,
   startProcess,
 } from "@/service/apiService";
 
@@ -82,6 +83,9 @@ const common = {
 
   getFileDeleted: async (formDataObj) => {
     return await fileDeleted(formDataObj);
+  },
+  getProcessCancel: async (processId) => {
+    return await processCancelled(processId);
   },
 };
 

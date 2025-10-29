@@ -5,7 +5,7 @@ import { errorMessage } from "@/lib/utils";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportRawFiles = () => {
+const ImportCustomerDetails = () => {
   const entity = "ImportDeductee";
 
   const { params } = useParams();
@@ -34,7 +34,6 @@ const ImportRawFiles = () => {
       console.error(error);
     }
   };
-
   return (
     <>
       {/* Import File Section */}
@@ -59,6 +58,7 @@ const ImportRawFiles = () => {
           <span>Import</span>
         </button>
       </div>
+
       {/* Buttons Section  */}
       <div className="mt-5 rounded-md border border-gray-100 shadow-md">
         <div className="flex items-center-safe justify-between gap-2 p-5">
@@ -162,4 +162,4 @@ const ImportRawFiles = () => {
   );
 };
 
-export default ImportRawFiles;
+export default ImportCustomerDetails;

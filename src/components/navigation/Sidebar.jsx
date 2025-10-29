@@ -57,7 +57,7 @@ const Sidebar = ({ sideBarOpen }) => {
                           ? typeOfFile[0]
                           : typeOfFile
                         : null,
-                    day: page === "withDrawal" ? crtDay : null,
+                    day: panelName === "Daily Remitance" ? crtDay : null,
                     panelName: panelName || "", // only include if defined
                     pageName: page || "",
                   };
@@ -72,10 +72,10 @@ const Sidebar = ({ sideBarOpen }) => {
                         }
                         className={({ isActive }) =>
                           [
-                            "relative flex cursor-pointer items-center justify-between py-2 font-medium whitespace-nowrap text-black transition-all after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left",
+                            "relative flex cursor-pointer items-center justify-between py-2 font-medium whitespace-nowrap text-black transition-all after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:bg-[#72a83a] after:transition-transform after:duration-300",
                             isActive
-                              ? "after:scale-x-100 after:bg-[#72a83a] after:transition-transform after:duration-300"
-                              : "after:scale-x-0 after:bg-[#72a83a] after:transition-transform after:duration-300 hover:after:scale-x-100",
+                              ? "after:scale-x-100"
+                              : "after:scale-x-0 hover:after:scale-x-100",
                           ].join(" ")
                         }
                       >

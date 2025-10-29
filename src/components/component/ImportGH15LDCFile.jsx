@@ -89,9 +89,9 @@ const ImportGH15LDCFile = () => {
         </div>
       </div>
 
-      {/* Button Section */}
+      {/* Buttons Section  */}
       <div className="mt-5 rounded-md border border-gray-100 shadow-md">
-        <div className="flex justify-between gap-4 p-5">
+        <div className="flex items-center-safe justify-between gap-2 p-5">
           {/* GL Reconciliation Button  */}
           <button
             className="btnBorder DarkGreen btn"
@@ -104,7 +104,9 @@ const ImportGH15LDCFile = () => {
             />
             <span className="w-full text-[16px]">GL Reconciliation</span>
           </button>
-
+          <span>
+            <i className="fa-solid fa-right-long text-gray-700"></i>
+          </span>
           {/* Generate TTUM Report Button */}
           <button
             className="btnBorder Green btn"
@@ -117,7 +119,9 @@ const ImportGH15LDCFile = () => {
             />
             <span className="w-full text-[16px]">Generate TTUM Report</span>
           </button>
-
+          <span>
+            <i className="fa-solid fa-right-long text-gray-700"></i>
+          </span>
           {/* Generate Other OA & OE Excel */}
           <button
             className="btnBorder DarkGreen btn"
@@ -133,7 +137,7 @@ const ImportGH15LDCFile = () => {
             </span>
           </button>
         </div>
-        <div className="flex justify-evenly gap-4 p-5">
+        <div className="flex items-center-safe justify-between gap-2 p-5">
           {/* Generate Customer ID & PAN List  */}
           <button
             className="btnBorder Green btn"
@@ -148,20 +152,39 @@ const ImportGH15LDCFile = () => {
               Generate Customer ID & PAN List
             </span>
           </button>
-
-          {/* Validate & Generate Format File  */}
+          <span>
+            <i className="fa-solid fa-right-long text-gray-700"></i>
+          </span>
+          {/*  Validate & Generate */}
+          <button
+            className="btnBorder DarkGreen btn"
+            onClick={() =>
+              handleProcessButtonClick("ValidateDataAndSegregateData")
+            }
+          >
+            <img
+              src={"/images/gificons/ValidateExcel.gif"}
+              alt="Search Icon"
+              className="h-7 mix-blend-multiply"
+            />
+            <span className="btntext text-[16px]">
+              Validate & Generate Format File
+            </span>
+          </button>
+          <span>
+            <i className="fa-solid fa-right-long text-gray-700"></i>
+          </span>
+          {/* Validate & Generate  */}
           <button
             className="btnBorder yellow btn"
-            onClick={() => handleProcessButtonClick("GenerateReport")}
+            onClick={() => handleProcessButtonClick("GenerateFormatFile")}
           >
             <img
               src={"/images/gificons/launchTemplate.gif"}
               alt="Launch Icon"
               className="h-[30px] w-[35px] mix-blend-multiply"
             />
-            <span className="btntext text-[16px]">
-              Validate & Generate Format File
-            </span>
+            <span className="btntext text-[16px]">Generate Format File</span>
           </button>
         </div>
       </div>
