@@ -276,7 +276,7 @@ const ImportDeductee = () => {
               onClick={handleAdditionalDetailModal}
             >
               <img
-                src={"/images/gificons/openfile.gif"}
+                src={`${import.meta.env.BASE_URL}images/gificons/openfile.gif`}
                 alt="Add Bulk Token"
                 className="h-7 mix-blend-multiply"
               />
@@ -290,7 +290,7 @@ const ImportDeductee = () => {
               onClick={handleOpenFolderClick}
             >
               <img
-                src={"/images/gificons/OpenFolder.gif"}
+                src={`${import.meta.env.BASE_URL}images/gificons/OpenFolder.gif`}
                 alt="Add Bulk Token"
                 className="h-7 mix-blend-multiply"
               />
@@ -314,7 +314,7 @@ const ImportDeductee = () => {
             </div>
             <button className="btnBorder Green btn" onClick={fetchListData}>
               <img
-                src={"/images/gificons/refresh.gif"}
+                src={`${import.meta.env.BASE_URL}images/gificons/refresh.gif`}
                 alt="Export to Excel Button"
                 className="h-7 mix-blend-multiply"
               />

@@ -16,7 +16,7 @@ const DropdownMenu = () => {
         <MenuButton className="align-middle outline-none">
           <img
             className="h-8 w-8 cursor-pointer"
-            src="/images/user.png"
+            src={`${import.meta.env.BASE_URL}/images/user.png`}
             alt="User Image"
           />
         </MenuButton>
@@ -29,7 +29,7 @@ const DropdownMenu = () => {
             <button className="group flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-1.5 data-focus:bg-gray-100">
               <img
                 className="h-6 w-6"
-                src="/images/user.png"
+                src={`${import.meta.env.BASE_URL}images/user.png`}
                 alt="User Image"
               />
               <span>
@@ -44,7 +44,7 @@ const DropdownMenu = () => {
             >
               <img
                 className="h-6 w-6 mix-blend-multiply"
-                src="/images/signOut.png"
+                src={`${import.meta.env.BASE_URL}images/signOut.png`}
                 alt="Sign Out Image"
               />
               <span>Log Out</span>

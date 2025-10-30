@@ -52,7 +52,7 @@ const ImportPanDetails = () => {
         <button className="btnBorder lightCyan btn">
           <img
             className="h-[35px] w-[35px] mix-blend-multiply"
-            src={"/images/gificons/importFile.gif"}
+            src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
             alt="Import"
           />
           <span>Import</span>
@@ -67,7 +67,7 @@ const ImportPanDetails = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-              src={"/images/gificons/calculator.gif"}
+              src={`${import.meta.env.BASE_URL}images/gificons/calculator.gif`}
               alt="Export to Excel Button"
               className="h-[30px] mix-blend-multiply"
             />
@@ -82,7 +82,7 @@ const ImportPanDetails = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-              src={"/images/gificons/generateexcelfile.gif"}
+              src={`${import.meta.env.BASE_URL}images/gificons/generateexcelfile.gif`}
               alt="Export to Excel Button"
               className="h-[30px] mix-blend-multiply"
             />
@@ -97,7 +97,7 @@ const ImportPanDetails = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-              src={"/images/gificons/GenerateExcel.gif"}
+              src={`${import.meta.env.BASE_URL}images/gificons/GenerateExcel.gif`}
               alt="Launch Icon"
               className="h-[30px] w-[35px] mix-blend-multiply"
             />
@@ -113,7 +113,7 @@ const ImportPanDetails = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-              src={"/images/gificons/process.gif"}
+              src={`${import.meta.env.BASE_URL}images/gificons/process.gif`}
               alt="Launch Icon"
               className="h-[30px] w-[35px] mix-blend-multiply"
             />
@@ -132,7 +132,7 @@ const ImportPanDetails = () => {
             }
           >
             <img
-              src={"/images/gificons/ValidateExcel.gif"}
+              src={`${import.meta.env.BASE_URL}images/gificons/ValidateExcel.gif`}
               alt="Search Icon"
               className="h-7 mix-blend-multiply"
             />
@@ -149,7 +149,7 @@ const ImportPanDetails = () => {
             onClick={() => handleProcessButtonClick("GenerateFormatFile")}
           >
             <img
-              src={"/images/gificons/launchTemplate.gif"}
+              src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
               alt="Launch Icon"
               className="h-[30px] w-[35px] mix-blend-multiply"
             />

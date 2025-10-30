@@ -53,7 +53,7 @@ const ImportNewAccount = () => {
         <button className="btnBorder lightCyan btn">
           <img
             className="h-[35px] w-[35px] mix-blend-multiply"
-            src={"/images/gificons/importFile.gif"}
+            src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
             alt="Import"
           />
           <span>Import File</span>
@@ -68,7 +68,7 @@ const ImportNewAccount = () => {
             onClick={() => handleProcessButtonClick("Validate15GH")}
           >
             <img
-              src={"/images/gificons/challandetails.gif"}
+              src={`${import.meta.env.BASE_URL}images/gificons/challandetails.gif`}
               alt="Search Icon"
               className="h-7 mix-blend-multiply"
             />
@@ -83,7 +83,7 @@ const ImportNewAccount = () => {
             onClick={() => handleProcessButtonClick("ValidateNewAccount")}
           >
             <img
-              src={"/images/gificons/agreement.gif"}
+              src={`${import.meta.env.BASE_URL}images/gificons/agreement.gif`}
               alt="Search Icon"
               className="h-7 mix-blend-multiply"
             />
@@ -98,7 +98,7 @@ const ImportNewAccount = () => {
             onClick={() => handleProcessButtonClick("ValidateTaxCode")}
           >
             <img
-              src={"/images/gificons/change.gif"}
+              src={`${import.meta.env.BASE_URL}images/gificons/change.gif`}
               alt="Search Icon"
               className="h-7 mix-blend-multiply"
             />
@@ -113,7 +113,7 @@ const ImportNewAccount = () => {
             onClick={() => handleProcessButtonClick("ValidateNewTds")}
           >
             <img
-              src={"/images/gificons/financing.gif"}
+              src={`${import.meta.env.BASE_URL}images/gificons/financing.gif`}
               alt="Search Icon"
               className="h-7 mix-blend-multiply"
             />
