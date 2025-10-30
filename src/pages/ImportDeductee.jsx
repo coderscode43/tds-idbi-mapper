@@ -150,7 +150,10 @@ const ImportDeductee = () => {
         updatedSearchParams.typeOfFile !== undefined
           ? updatedSearchParams.typeOfFile
           : searchParams.typeOfFile, // Preserve if not updated
-      day: updatedSearchParams.panelName === "Daily Remitance" ? crtDay : "",
+      day:
+        updatedSearchParams.panelName === "Daily Remitance"
+          ? updatedSearchParams.day
+          : crtDay,
       panelName: updatedSearchParams.panelName || "Daily Remitance",
       pageName: pageName,
     };
