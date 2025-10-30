@@ -39,7 +39,7 @@ const SuccessModal = () => {
           <div className="mt-6 flex justify-center">
             <button
               onClick={() => setSuccessModal(false)}
-              className="w-3xs cursor-pointer rounded-3xl bg-green-500/95 px-11 py-2 font-medium text-white hover:bg-green-600"
+              className="w-3/5 cursor-pointer rounded-3xl bg-green-500/95 px-11 py-2 font-medium text-white hover:bg-green-600"
             >
               Continue
             </button>

@@ -65,7 +65,6 @@ export const refinedSearchParams = (searchParams) => {
   return JSON.stringify(refinedSearchParams(searchParams));
 };
 
-
 export const anyFileDownload = (response) => {
   // Try to get filename from Content-Disposition
   let fileName = "export.xlsx";
@@ -87,3 +86,6 @@ export const anyFileDownload = (response) => {
   link.remove();
   window.URL.revokeObjectURL(url);
 };
+
+// Assuming days of the month as a simple example FOR TEMPORARY BASIS 
+export const dayList = Array.from({ length: 31 }, (_, i) => i + 1);

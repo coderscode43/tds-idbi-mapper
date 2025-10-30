@@ -8,11 +8,16 @@ import DynamicTable from "@/components/tables/DynamicTable";
 import statusContext from "@/context/ModalsContext/statusContext";
 import staticDataContext from "@/context/staticDataContext";
 import useLockBodyScroll from "@/hooks/useLockBodyScroll";
-import { dateWithTime, errorMessage, refinedSearchParams } from "@/lib/utils";
+import {
+  dateWithTime,
+  dayList,
+  errorMessage,
+  refinedSearchParams,
+} from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const ImportDeducteeDetails = () => {
+const ImportDeductee = () => {
   const pageName = "Import Deductee";
 
   const { params } = useParams();
@@ -27,7 +32,6 @@ const ImportDeducteeDetails = () => {
     ClientPAN,
     typeOfFile,
     financialYear,
-    dayList,
     crtDay,
   } = useContext(staticDataContext);
   const { showSuccess, showError } = useContext(statusContext);
@@ -44,7 +48,7 @@ const ImportDeducteeDetails = () => {
     fy: "",
     month: "",
     quarter: "",
-    typeOfFile: "",
+    typeOfFile: "Interest",
     day: "",
     panelName: params?.panelName || "",
   });
@@ -143,20 +147,18 @@ const ImportDeducteeDetails = () => {
       month: updatedSearchParams.month || crtMonth,
       quarter: updatedSearchParams.quarter || crtQuarter,
       typeOfFile:
-        updatedSearchParams.typeOfFile ||
-        (Array.isArray(typeOfFile) ? typeOfFile[0] : typeOfFile),
-      panelName: updatedSearchParams.panelName || "ImportRawFiles",
-      pageName: "Import Deductee",
+        updatedSearchParams.typeOfFile !== undefined
+          ? updatedSearchParams.typeOfFile
+          : searchParams.typeOfFile, // Preserve if not updated
+      day: updatedSearchParams.panelName === "Daily Remitance" ? crtDay : "",
+      panelName: updatedSearchParams.panelName || "Daily Remitance",
+      pageName: pageName,
     };
-
-    if (updatedSearchParams.typeOfFile) {
-      delete searchObj.typeOfFile;
-    }
 
     const refinedParams = refinedSearchParams(searchObj);
 
     // Navigate to the updated URL
-    navigate(`/home/listSearch/importDeducteeDetails/${refinedParams}`);
+    navigate(`/home/listSearch/importDeductee/${refinedParams}`);
   };
 
   const handleAdditionalDetailModal = async () => {
@@ -193,26 +195,35 @@ const ImportDeducteeDetails = () => {
     }
   };
 
+  let parsedParams = {};
+  try {
+    parsedParams = JSON.parse(params);
+  } catch (error) {
+    console.log("Params not JSON parsable:", params, error);
+  }
+
   return (
     <>
       <div className="custom-scrollbar space-y-5">
-        <h1 className="mb-4 text-[25px] font-bold">Import Deductee Details</h1>
+        <h1 className="mb-4 text-[25px] font-bold">Import Deductee</h1>
 
         <div className="space-y-6 rounded-md border border-gray-100 p-5 shadow-lg">
           <div className="flex items-end justify-between gap-4">
             <div className="flex w-full gap-5">
               <FilterSelect
                 label="Financial Year"
-                name="financialYear"
+                name="fy"
                 options={financialYear}
-                value={crtFy}
-                onChange={handleSearchParamChange}
+                value={parsedParams.fy || crtFy}
+                onChange={(value) =>
+                  handleSearchParamChange({ target: { name: "fy", value } })
+                }
               />
               <FilterSelect
                 label="Month"
                 name="month"
                 options={filteredMonths}
-                value={searchParams.month || crtMonth}
+                value={parsedParams.month || crtMonth}
                 onChange={(value) =>
                   handleSearchParamChange({ target: { name: "month", value } })
                 }
@@ -222,28 +233,34 @@ const ImportDeducteeDetails = () => {
                 label="Quarter"
                 name="quarter"
                 options={Object.keys(MonthList || {})}
-                value={searchParams.quarter || crtQuarter}
+                value={parsedParams.quarter || crtQuarter}
                 onChange={(value) =>
                   handleSearchParamChange({
                     target: { name: "quarter", value },
                   })
                 }
               />
-
               <FilterSelect
                 label="Type of file"
                 name="typeOfFile"
                 options={typeOfFile}
-                value={typeOfFile}
-                onChange={common.handleSearchInputChange}
+                value={parsedParams.typeOfFile || ""}
+                onChange={(value) =>
+                  handleSearchParamChange({
+                    target: { name: "typeOfFile", value },
+                  })
+                }
               />
-              {params === "Daily Remitance" && (
+
+              {parsedParams?.panelName === "Daily Remitance" && (
                 <FilterSelect
                   label="Date"
                   name="date"
                   options={dayList}
                   value={crtDay}
-                  onChange={common.handleSearchInputChange}
+                  onChange={(value) =>
+                    handleSearchParamChange({ target: { name: "day", value } })
+                  }
                 />
               )}
             </div>
@@ -343,4 +360,4 @@ const ImportDeducteeDetails = () => {
   );
 };
 
-export default ImportDeducteeDetails;
+export default ImportDeductee;

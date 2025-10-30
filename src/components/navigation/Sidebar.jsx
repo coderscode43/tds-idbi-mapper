@@ -6,9 +6,9 @@ import DynamicModal from "../component/DynamicModal";
 
 const navItems = [
   {
-    id: "importDeducteeDetails",
+    id: "importDeductee",
     label: "Import Deductee",
-    page: "importDeducteeDetails",
+    page: "importDeductee",
     iconClass: "fa-solid fa-file-import",
     panelName: "Daily Remitance",
   },
@@ -52,14 +52,17 @@ const Sidebar = ({ sideBarOpen }) => {
                     month: crtMonth,
                     quarter: crtQuarter,
                     typeOfFile:
-                      page === "importDeducteeDetails"
+                      page === "importDeductee"
                         ? typeOfFile
                           ? typeOfFile[0]
                           : typeOfFile
                         : null,
                     day: panelName === "Daily Remitance" ? crtDay : null,
                     panelName: panelName || "", // only include if defined
-                    pageName: page || "",
+                    pageName:
+                      page === "importDeductee"
+                        ? "Import Deductee"
+                        : page || "",
                   };
                   const refinedParams = refinedSearchParams(searchObj);
                   return (

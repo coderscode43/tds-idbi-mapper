@@ -5,14 +5,14 @@ const DynamicTable = ({ tableHead, tableData, handleCancel }) => {
   return (
     <div className="relative w-full">
       <div className="w-full overflow-clip rounded-md border border-gray-200">
-        <StickyScrollbarWrapper>
+        <div className="custom-scrollbar max-h-[500px] overflow-y-auto">
           <table className="w-full text-[14px]">
             <thead
               className="bg-[var(--secondary-color)]"
               style={{
                 zIndex: "9",
                 position: "sticky",
-                top: "56px",
+                top: "0px",
               }}
             >
               <tr>
@@ -54,7 +54,7 @@ const DynamicTable = ({ tableHead, tableData, handleCancel }) => {
                       {tableHead.map(({ key, formatter }, colIndex) => (
                         <td
                           key={colIndex}
-                          className={`w-auto border-[1.5px] border-gray-300 p-2 text-ellipsis whitespace-nowrap`}
+                          className={`border-[1.5px] border-gray-300 p-2 text-ellipsis`}
                         >
                           {key === "action" && data.status === "Pending" ? (
                             // download button Icon shown if the the filetype if filefolder
@@ -75,7 +75,7 @@ const DynamicTable = ({ tableHead, tableData, handleCancel }) => {
               )}
             </tbody>
           </table>
-        </StickyScrollbarWrapper>
+        </div>
       </div>
     </div>
   );

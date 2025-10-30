@@ -47,7 +47,7 @@ const WithDrawal = () => {
       quarter: updatedSearchParams.quarter || crtQuarter,
       typeOfFile: updatedSearchParams.dayList || crtDay,
       panelName: updatedSearchParams.panelName || " ",
-      pageName: "Import Deductee",
+      pageName: "withdrawal",
     };
 
     if (updatedSearchParams.typeOfFile) {
@@ -57,7 +57,7 @@ const WithDrawal = () => {
     const refinedParams = refinedSearchParams(searchObj);
 
     // Navigate to the updated URL
-    navigate(`/home/listSearch/importDeducteeDetails/${refinedParams}`);
+    navigate(`/home/listSearch/withDrawal/${refinedParams}`);
   };
 
   return (
@@ -67,12 +67,12 @@ const WithDrawal = () => {
         <div className="space-y-6 rounded-md border border-gray-100 p-5 shadow-lg">
           <div className="flex w-full gap-5">
             <FilterSelect
-                label="Financial Year"
-                name="financialYear"
-                options={financialYear}
-                value={crtFy}
-                onChange={handleSearchParamChange}
-              />
+              label="Financial Year"
+              name="financialYear"
+              options={financialYear}
+              value={crtFy}
+              onChange={handleSearchParamChange}
+            />
             <FilterSelect
               label="Month"
               name="month"

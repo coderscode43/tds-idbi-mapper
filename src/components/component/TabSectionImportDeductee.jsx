@@ -81,7 +81,7 @@ const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
     };
 
     const refinedParams = refinedSearchParams(searchObj);
-    navigate(`/home/listSearch/importDeducteeDetails/${refinedParams}`);
+    navigate(`/home/listSearch/importDeductee/${refinedParams}`);
   };
 
   return (

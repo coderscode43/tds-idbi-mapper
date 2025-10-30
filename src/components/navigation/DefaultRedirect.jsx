@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 
 const DefaultRedirect = () => {
-  const { ClientPAN, crtFy, crtMonth, crtQuarter } =
+  const { ClientPAN, crtFy, crtMonth, crtQuarter, typeOfFile, crtDay } =
     useContext(staticDataContext);
 
   // Wait until all context values are available
@@ -14,23 +14,25 @@ const DefaultRedirect = () => {
     return null; // Or a loading spinner
   }
 
+  let panelName = "Daily Remitance";
+  let pageName = "Import Deductee";
   const searchObj = {
     pan: ClientPAN,
     fy: crtFy,
     month: crtMonth,
     quarter: crtQuarter,
-    panelName: "Daily Remitance",
-    pageName: "Import Deductee",
+    typeOfFile:
+      pageName === pageName ? (typeOfFile ? typeOfFile[0] : typeOfFile) : null,
+    day: panelName === "Daily Remitance" ? crtDay : null,
+    panelName: panelName,
+    pageName: pageName,
   };
 
   const refinedParams = refinedSearchParams(searchObj);
 
-  // Navigate to importDeducteeDetails with the computed params
+  // Navigate to Import Deductee with the computed params
   return (
-    <Navigate
-      to={`/home/listSearch/importDeducteeDetails/${refinedParams}`}
-      replace
-    />
+    <Navigate to={`/home/listSearch/importDeductee/${refinedParams}`} replace />
   );
 };
 
