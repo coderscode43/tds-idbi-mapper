@@ -2,6 +2,7 @@ import common from "@/common/common";
 import FilterSelect from "@/components/component/FilterSelect";
 import Pagination from "@/components/component/Pagination";
 import TabSectionImportDeductee from "@/components/component/TabSectionImportDeductee";
+import AddDayFolderModal from "@/components/modals/AddDayFolderModal";
 import OpenAdditionalDetailFolder from "@/components/modals/OpenAdditionalDetailFolder";
 import OpenFolderModal from "@/components/modals/OpenFolderModal";
 import DynamicTable from "@/components/tables/DynamicTable";
@@ -34,13 +35,15 @@ const ImportDeductee = () => {
     financialYear,
     crtDay,
   } = useContext(staticDataContext);
-  const { showSuccess, showError } = useContext(statusContext);
+  const { showSuccess, showError, showOverride } = useContext(statusContext);
 
-  const [listData, setListData] = useState([]);
   const [gotoPage, setGotoPage] = useState(1);
+  const [listData, setListData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [fileListData, setFileListData] = useState([]);
+  const [showAddDayFolder, setShowAddDayFolder] = useState(false);
   const [showOpenFolderModal, setShowOpenFolderModal] = useState(false);
   const [additionalDetailModal, setAdditionalDetailModal] = useState(false);
 
@@ -60,10 +63,9 @@ const ImportDeductee = () => {
   const quarterToUse = searchParams.quarter || crtQuarter;
   const filteredMonths = MonthList?.[quarterToUse] || [];
 
-  // const filteredMonths = searchParams.quarter ? MonthList?.[searchParams.quarter] : [];
-
   const fetchListData = async () => {
     try {
+      setLoading(true);
       const pageNo = 0;
       const resultPerPage = 100;
       const entity = "ProcessDetail";
@@ -82,6 +84,8 @@ const ImportDeductee = () => {
       setTotalPages(pages);
     } catch (error) {
       console.error("Error fetching list data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -110,6 +114,7 @@ const ImportDeductee = () => {
     setShowOpenFolderModal(true);
 
     try {
+      setLoading(true);
       const entity = "WorkingFile";
       const parsedParams = JSON.parse(params); // parse URL params
       const clientPAN = ClientPAN;
@@ -126,6 +131,8 @@ const ImportDeductee = () => {
       setFileListData(response?.data || []);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -167,6 +174,7 @@ const ImportDeductee = () => {
   const handleAdditionalDetailModal = async () => {
     setAdditionalDetailModal(true);
     try {
+      setLoading(true);
       const entity = "WorkingFile";
       const parsedParams = JSON.parse(params); // parse URL params
       const clientPAN = ClientPAN;
@@ -182,19 +190,34 @@ const ImportDeductee = () => {
       setFileListData(response?.data || []);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleProcessCancel = async (data) => {
-    let processName = data?.processName;
-    let id = data?.id;
-    try {
-      const response = await common.getProcessCancel(id);
-      showSuccess(response.data.successMsg);
-    } catch (error) {
-      showError(
-        `Cannot terminate process ${processName.replace(/(?!^)([A-Z])/g, " $1")}: ${errorMessage(error)}`
+  const handleProcessCancel = async (data, confirm = "NO") => {
+    const processName = data?.processName;
+    const id = data?.id;
+
+    // 👇 This triggers your override modal
+    if (confirm === "NO") {
+      showOverride(
+        `Are you sure you want to terminate the process ${processName}?`,
+        () => handleProcessCancel(data, "YES")
       );
+    } else {
+      // 👇 This part runs only when the user clicks “Yes”
+      try {
+        setLoading(true);
+        const response = await common.getProcessCancel(id);
+        showSuccess(response.data.message);
+      } catch (error) {
+        showError(
+          `Cannot terminate process ${processName.replace(/(?!^)([A-Z])/g, " $1")}: ${errorMessage(error)}`
+        );
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -270,6 +293,20 @@ const ImportDeductee = () => {
           </div>
 
           <div className="flex justify-end gap-5">
+            {parsedParams?.panelName === "Daily Remitance" && (
+              <button
+                // disabled={selectFolder.length === 0}
+                className="btnBorder Violet btn"
+                onClick={() => setShowAddDayFolder(true)}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/add.gif`}
+                  alt="Add Date Folder"
+                  className="h-7 mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">Add Date Folder</span>
+              </button>
+            )}
             <button
               // disabled={selectFolder.length === 0}
               className="btnBorder lightYellow btn"
@@ -312,7 +349,10 @@ const ImportDeductee = () => {
               </h1>
               <p>Track all the actions and their status</p>
             </div>
-            <button className="btnBorder Green btn" onClick={fetchListData}>
+            <button
+              className="btnBorder Green btn"
+              onClick={() => fetchListData()}
+            >
               <img
                 src={`${import.meta.env.BASE_URL}images/gificons/refresh.gif`}
                 alt="Export to Excel Button"
@@ -325,6 +365,7 @@ const ImportDeductee = () => {
             tableHead={tableHead}
             tableData={tableData}
             handleCancel={handleProcessCancel}
+            loading={loading}
           />
         </div>
       </div>
@@ -357,6 +398,13 @@ const ImportDeductee = () => {
           setAdditionalDetailModal={setAdditionalDetailModal}
           fileListData={fileListData}
           setFileListData={setFileListData}
+        />
+      )}
+
+      {showAddDayFolder && (
+        <AddDayFolderModal
+          setShowAddDayFolder={setShowAddDayFolder}
+          parsedParams={parsedParams}
         />
       )}
     </>

@@ -21,7 +21,7 @@ const SuccessModal = () => {
           {/* Green Check Circle */}
           <div className="mx-auto flex h-18 w-18 items-center justify-center rounded-full bg-green-100">
             <div className="mx-auto flex h-15 w-15 items-center justify-center rounded-full bg-green-200">
-              <i className="fa-solid fa-circle-check rounded-full bg-white text-5xl text-green-500/95"></i>
+              <i className="fa-solid fa-circle-check rounded-full bg-white text-5xl text-[#00c847]"></i>
             </div>
           </div>
 

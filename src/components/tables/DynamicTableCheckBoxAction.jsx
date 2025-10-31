@@ -1,5 +1,6 @@
 import common from "@/common/common";
 import StickyScrollbarWrapper from "../component/StickyScrollbarWrapper";
+import TableLoadingSkeleton from "../component/TableLoadingSkeleton";
 
 const DynamicTableCheckBoxAction = ({
   tableHead,
@@ -9,8 +10,12 @@ const DynamicTableCheckBoxAction = ({
   selectedRows,
   setSelectedRows,
   setSelectedRowsData,
+  loading = false,
 }) => {
   const [lastLocation] = tableData;
+
+  // Skeleton loader rows count (adjust as needed)
+  const skeletonRows = 5;
 
   const isAllSelected =
     tableData.length > 0 && selectedRows.length === tableData.length;
@@ -26,8 +31,8 @@ const DynamicTableCheckBoxAction = ({
         }))
       );
     } else {
-      setSelectedRows([]);
-      setSelectedRowsData([]);
+      setSelectedRows([]); // to clear the checkbox selection
+      setSelectedRowsData([]); // to clear the checkbox selection
     }
   };
 
@@ -106,9 +111,14 @@ const DynamicTableCheckBoxAction = ({
               </thead>
 
               <tbody>
-                {!lastLocation ||
-                (Object.keys(lastLocation).length === 1 &&
-                  Object.keys(lastLocation)[0] === "lastLocation") ? (
+                {loading ? (
+                  <TableLoadingSkeleton
+                    columns={tableHead.length}
+                    rows={skeletonRows}
+                  />
+                ) : !lastLocation ||
+                  (Object.keys(lastLocation).length === 1 &&
+                    Object.keys(lastLocation)[0] === "lastLocation") ? (
                   <tr>
                     <td
                       colSpan={enhancedTableHead.length}
@@ -127,8 +137,8 @@ const DynamicTableCheckBoxAction = ({
                         onDoubleClick={async () => {
                           const response = await common.getGotoFolder(data);
                           setFileListData(response?.data?.entities || []);
-                          setSelectedRows([]);
-                          setSelectedRowsData([]);
+                          setSelectedRows([]); // to clear the checkbox selection
+                          setSelectedRowsData([]); // to clear the checkbox selection
                         }}
                       >
                         {/* Checkbox cell */}

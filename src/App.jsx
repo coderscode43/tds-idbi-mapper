@@ -33,10 +33,10 @@ const App = () => {
 
         <Route path="*" element={<PageNotFound />} />
       </>
-    )
-    // {
-    //   basename: "/TDSMapper/",
-    // }
+    ),
+    {
+      basename: "/TDSMapper/",
+    }
   );
   return <RouterProvider router={router} />;
 };

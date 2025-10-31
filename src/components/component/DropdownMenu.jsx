@@ -16,7 +16,7 @@ const DropdownMenu = () => {
         <MenuButton className="align-middle outline-none">
           <img
             className="h-8 w-8 cursor-pointer"
-            src={`${import.meta.env.BASE_URL}/images/user.png`}
+            src={`${import.meta.env.BASE_URL}images/user.png`}
             alt="User Image"
           />
         </MenuButton>

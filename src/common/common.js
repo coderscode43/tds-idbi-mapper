@@ -1,10 +1,12 @@
 import {
   addFileInFolder,
   addFolder,
+  createDayFolder,
   createFolder,
   downloadFile,
   fileDeleted,
   fileList,
+  generateZip,
   gotoFolder,
   gotoLastLocation,
   paginationListData,
@@ -84,8 +86,17 @@ const common = {
   getFileDeleted: async (formDataObj) => {
     return await fileDeleted(formDataObj);
   },
+
   getProcessCancel: async (processId) => {
     return await processCancelled(processId);
+  },
+
+  getGenerateZip: async (formDataObj) => {
+    return await generateZip(formDataObj);
+  },
+
+  getCreateDayFolder: async (formData) => {
+    return await createDayFolder(formData);
   },
 };
 

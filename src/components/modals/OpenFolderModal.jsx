@@ -38,12 +38,19 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
     console.log(value, "Value");
   };
 
+  const handleSearch = async () => {
+    console.log("hello ");
+  };
+
   const handleBack = async () => {
     const lastLocation = fileListData[0]?.lastLocation;
     const lastPart = lastLocation.substring(lastLocation.lastIndexOf("/") + 1);
+
     try {
       const response = await common.getGotoLastLocation(lastLocation, lastPart);
       setFileListData(response?.data?.entities);
+      setSelectedRows([]);
+      setSelectedRowsData([]);
     } catch (error) {
       console.log(error);
     }
@@ -67,15 +74,21 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
     }
   };
 
-  const validate = () => {
+  const validate = (min = 0, max = Infinity) => {
     const newErrors = {};
     let isValid = true;
 
-    // Validate checkbox selection
-    if (selectedRows.length === 0) {
-      newErrors.selectedRows = "Please select at least one checkbox.";
+    // Check the number of selected rows
+    const selectedCount = selectedRows.length;
+
+    if (selectedCount < min) {
+      newErrors.selectedRows = `Please select at least ${min} checkbox${min > 1 ? "es" : ""}.`;
+      isValid = false;
+    } else if (selectedCount > max) {
+      newErrors.selectedRows = `You can select at most ${max} checkbox${max > 1 ? "es" : ""}.`;
       isValid = false;
     }
+
     setErrors(newErrors);
     return isValid;
   };
@@ -83,7 +96,7 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
   const handleDelete = async (e) => {
     e.preventDefault();
 
-    if (!validate()) return;
+    if (!validate(1, Infinity)) return;
     // Construct the file path with proper slashes
     const lastLocation = `${selectedRowsData[0]?.lastLocation}`;
     const formData = {
@@ -96,6 +109,31 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
       const response = await common.getFileDeleted(JSON.stringify(formData));
       setFileListData(response?.data?.entities || []);
       showSuccess(response.data.successMsg);
+      setSelectedRows([]);
+      setSelectedRowsData([]);
+    } catch (error) {
+      showError(errorMessage(error));
+    }
+  };
+
+  const handleGenerateZip = async (e) => {
+    e.preventDefault();
+
+    if (!validate(1, 1)) return;
+    // Construct the file path with proper slashes
+    const lastLocation = `${selectedRowsData[0]?.lastLocation}`;
+    const formData = {
+      entity: {
+        downloadFileOrFolder: selectedRowsData[0],
+      },
+      lastLocation: lastLocation,
+    };
+    try {
+      const response = await common.getGenerateZip(JSON.stringify(formData));
+      setFileListData(response?.data?.entities || []);
+      showSuccess(response.data.successMsg);
+      setSelectedRows([]);
+      setSelectedRowsData([]);
     } catch (error) {
       showError(errorMessage(error));
     }
@@ -152,7 +190,10 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
                 className="flex-grow rounded-md border border-gray-300 px-4 py-1.5 text-[15px] text-gray-700 focus:outline-none"
                 onChange={handleInputChange}
               />
-              <button className="cursor-pointer space-x-1 rounded-md bg-green-500 px-3 py-1.5 text-white hover:bg-green-600">
+              <button
+                className="cursor-pointer space-x-1 rounded-md bg-green-500 px-3 py-1.5 text-white hover:bg-green-600"
+                onClick={handleSearch}
+              >
                 <i className="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>
@@ -174,7 +215,10 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
 
           {/* Footer Buttons */}
           <div className="flex justify-end gap-3 bg-blue-100 px-6 py-4">
-            <button className="cursor-pointer space-x-1 rounded-md bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700">
+            <button
+              className="cursor-pointer space-x-1 rounded-md bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+              onClick={handleGenerateZip}
+            >
               <i className="fa-solid fa-file-zipper"></i>{" "}
               <span>Generate Zip</span>
             </button>

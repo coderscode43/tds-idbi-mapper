@@ -87,5 +87,20 @@ export const anyFileDownload = (response) => {
   window.URL.revokeObjectURL(url);
 };
 
-// Assuming days of the month as a simple example FOR TEMPORARY BASIS 
+// Assuming days of the month as a simple example FOR TEMPORARY BASIS
 export const dayList = Array.from({ length: 31 }, (_, i) => i + 1);
+
+export const monthMaxDays = {
+  January: 31,
+  February: 28, // optional: handle leap year using parsedParams.fy
+  March: 31,
+  April: 30,
+  May: 31,
+  June: 30,
+  July: 31,
+  August: 31,
+  September: 30,
+  October: 31,
+  November: 30,
+  December: 31,
+};

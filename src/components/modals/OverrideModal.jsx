@@ -14,37 +14,49 @@ const OverrideModal = () => {
         overrideModal ? "visible opacity-100" : "invisible opacity-0"
       }`}
     >
-      <div className="relative w-full max-w-[20rem] rounded-2xl bg-white px-4 pt-8 pb-6 shadow-xl transition-all">
-        <div className="flex flex-col items-center justify-center gap-2">
-          <i className="fa-solid fa-circle-exclamation text-5xl text-amber-500"></i>
-          <p className="text-2xl font-medium">Warning </p>
-        </div>
-        <div className="relative pt-3 pb-6 text-center text-gray-600">
-          {typeof errorMessage !== "object"
-            ? overrideMessage.charAt(0).toUpperCase() + overrideMessage.slice(1)
-            : overrideMessage}
-        </div>
+      <div
+        className={`relative w-full max-w-[22rem] transform rounded-3xl bg-white px-4 pt-10 pb-8 shadow-[inset_10px_10px_14px_3px_#ffffff,inset_-10px_-10px_14px_3px_#ffffff] transition-all duration-300 ease-out`}
+      >
+        <div>
+          {/* Red Check Circle */}
+          <div className="mx-auto flex h-18 w-18 items-center justify-center rounded-full bg-amber-100">
+            <div className="mx-auto flex h-15 w-15 items-center justify-center rounded-full bg-amber-200">
+              <i className="fa-solid fa-circle-exclamation rounded-full bg-white text-5xl text-amber-500"></i>
+            </div>
+          </div>
 
-        {/* Footer */}
-        <div className="flex w-full justify-center rounded-b-md">
-          <button
-            onClick={() => {
-              setOverrideModal(false);
-            }}
-            className="mx-2 w-full cursor-pointer rounded-lg bg-blue-500 py-2 font-medium text-white"
-          >
-            No
-          </button>
+          {/* Title */}
+          <h2 className="mt-4 text-center text-2xl font-medium text-gray-800">
+            Warning
+          </h2>
 
-          <button
-            onClick={() => {
-              setOverrideModal(false);
-              retryAction("YES");
-            }}
-            className="mx-2 w-full cursor-pointer rounded-lg bg-red-500 py-2 font-medium text-white"
-          >
-            Yes
-          </button>
+          <p className="mt-2 text-center text-gray-500">
+            {typeof errorMessage !== "object"
+              ? overrideMessage.charAt(0).toUpperCase() +
+                overrideMessage.slice(1)
+              : overrideMessage}
+          </p>
+          {/* Footer */}
+          <div className="mt-6 flex w-full justify-center gap-3 rounded-b-md">
+            <button
+              onClick={() => {
+                setOverrideModal(false);
+              }}
+              className="w-2/5 cursor-pointer rounded-3xl border-gray-100 bg-gray-200 px-11 py-2 font-medium text-black hover:bg-gray-300"
+            >
+              No
+            </button>
+
+            <button
+              onClick={() => {
+                setOverrideModal(false);
+                retryAction("YES");
+              }}
+              className="w-2/5 cursor-pointer rounded-3xl border border-amber-500 bg-amber-500/90 px-11 py-2 font-medium text-white hover:bg-amber-500"
+            >
+              Yes
+            </button>
+          </div>
         </div>
       </div>
     </div>

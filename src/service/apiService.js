@@ -26,11 +26,7 @@ export const paginationWithSearchListData = async (
 ) => {
   const response = await axios.get(
     `api${entity}/list/processCount/${pageNo}/${resultPerPage}`,
-    {
-      params: {
-        processData: refinedSearchParams,
-      },
-    }
+    { params: { processData: refinedSearchParams } }
   );
   return response;
 };
@@ -61,11 +57,7 @@ export const addFileInFolder = async (formDataObj) => {
   const response = await axios.post(
     `apiWorkingFile/addFileInFolder`,
     formDataObj,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
+    { headers: { "Content-Type": "multipart/form-data" } }
   );
   return response;
 };
@@ -117,14 +109,30 @@ export const fileDeleted = async (formDataObj) => {
   const response = await axios.post(
     `apiWorkingFile/deleteFileNFolder`,
     formDataObj,
-    {
-      headers: { "Content-Type": "application/json" },
-    }
+    { headers: { "Content-Type": "application/json" } }
   );
   return response;
 };
 
 export const processCancelled = async (processId) => {
   const response = await axios.get(`apiProcessDetail/cancel/${processId}`);
+  return response;
+};
+
+export const generateZip = async (formDataObj) => {
+  const response = await axios.post(
+    `apiWorkingFile/generateZipFileNFolder`,
+    formDataObj,
+    { headers: { "Content-Type": "application/json" } }
+  );
+  return response;
+};
+
+export const createDayFolder = async (formData) => {
+  const response = await axios.post(
+    `apiImportDeductee/add/dayFolder`,
+    formData,
+    { headers: { "Content-Type": "application/json" } }
+  );
   return response;
 };
