@@ -63,13 +63,17 @@ export const addFileInFolder = async (formDataObj) => {
 };
 
 export const createFolder = async (formData, lastLocation, folderName) => {
-  const response = await axios.get(`apiWorkingFile/createFolder`, {
-    params: {
-      newdata: JSON.stringify(formData),
-      lastLocation: lastLocation,
-      name: folderName,
-    },
-  });
+  const response = await axios.post(
+    `apiWorkingFile/createFolder`,
+    {},
+    {
+      params: {
+        newdata: JSON.stringify(formData),
+        lastLocation: lastLocation,
+        name: folderName,
+      },
+    }
+  );
   return response;
 };
 
@@ -115,7 +119,11 @@ export const fileDeleted = async (formDataObj) => {
 };
 
 export const processCancelled = async (processId) => {
-  const response = await axios.get(`apiProcessDetail/cancel/${processId}`);
+  const response = await axios.post(
+    `apiProcessDetail/cancel/${processId}`,
+    {},
+    { headers: { "Content-Type": "application/json" } }
+  );
   return response;
 };
 
