@@ -4,15 +4,15 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ImportCustomerDetails from "./ImportCustomerDetails";
+import ImportGH15 from "./ImportGH15";
 import ImportGH15LDCFile from "./ImportGH15LDCFile";
 import ImportGLFiles from "./ImportGLFiles";
+import ImportNewAccount from "./ImportNewAccount";
+import ImportNoRefund from "./ImportNoRefund";
 import ImportPanDetails from "./ImportPanDetails";
 import ImportRawFiles from "./ImportRawFiles";
 import ImportRefundData from "./ImportRefundData";
-import ImportNewAccount from "./ImportNewAccount";
 import ImportTaxChangeCode from "./ImportTaxChangeCode";
-import ImportNoRefund from "./ImportNoRefund";
-import ImportGH15 from "./ImportGH15";
 
 const categories = [
   { name: "Daily Remitance", panelName: "Daily Remitance" },
@@ -20,19 +20,19 @@ const categories = [
 ];
 
 const Daily = [
-  { name: "Import GH15 ", panelName: "ImportGH15" },
-  { name: "Import New A/C", panelName: "ImportNewAccount" },
-  { name: "Import Tax Change Code", panelName: "ImportTaxChangeCode" },
-  { name: "Import No TDS", panelName: "ImportNoRefund" },
+  { name: "Import GH15 ", panelName: "GH15" },
+  { name: "Import New A/C", panelName: "NewAccount" },
+  { name: "Import Tax Change Code", panelName: "TaxChangeCode" },
+  { name: "Import No TDS", panelName: "NoRefund" },
 ];
 
 const Monthly = [
-  { name: "Import Raw Files", panelName: "ImportRawFiles" },
-  { name: "Import GL Files", panelName: "ImportGLFiles" },
-  { name: "Import GH15 & LDC File", panelName: "ImportGH15AndLDCFile" },
-  { name: "Import Refund Data", panelName: "ImportRefundData" },
-  { name: "Import PAN Details", panelName: "ImportPanDetails" },
-  { name: "Import Customer Details", panelName: "ImportCustomerDetails" },
+  { name: "Import Raw Files", panelName: "RawFiles" },
+  { name: "Import GL Files", panelName: "GLFiles" },
+  { name: "Import GH15 & LDC File", panelName: "GH15AndLDCFile" },
+  { name: "Import Refund Data", panelName: "RefundData" },
+  { name: "Import PAN Details", panelName: "PanDetails" },
+  { name: "Import Customer Details", panelName: "CustomerDetails" },
 ];
 
 const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
@@ -131,12 +131,30 @@ const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
             <TabPanels className="mt-3">
               {Daily.map((tab) => (
                 <TabPanel key={tab.panelName}>
-                  {tab.panelName === "ImportGH15" && <ImportGH15 />}
-                  {tab.panelName === "ImportNewAccount" && <ImportNewAccount />}
-                  {tab.panelName === "ImportTaxChangeCode" && (
-                    <ImportTaxChangeCode />
+                  {tab.panelName === "GH15" && (
+                    <ImportGH15
+                      subPanel={tab.panelName}
+                      entity={"ImportDeductee"}
+                    />
                   )}
-                  {tab.panelName === "ImportNoRefund" && <ImportNoRefund />}
+                  {tab.panelName === "NewAccount" && (
+                    <ImportNewAccount
+                      subPanel={tab.panelName}
+                      entity={"ImportDeductee"}
+                    />
+                  )}
+                  {tab.panelName === "TaxChangeCode" && (
+                    <ImportTaxChangeCode
+                      subPanel={tab.panelName}
+                      entity={"ImportDeductee"}
+                    />
+                  )}
+                  {tab.panelName === "NoRefund" && (
+                    <ImportNoRefund
+                      subPanel={tab.panelName}
+                      entity={"ImportDeductee"}
+                    />
+                  )}
                 </TabPanel>
               ))}
             </TabPanels>
@@ -168,15 +186,41 @@ const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
             <TabPanels className="mt-3">
               {Monthly.map((tab) => (
                 <TabPanel key={tab.panelName}>
-                  {tab.panelName === "ImportRawFiles" && <ImportRawFiles />}
-                  {tab.panelName === "ImportGLFiles" && <ImportGLFiles />}
-                  {tab.panelName === "ImportGH15AndLDCFile" && (
-                    <ImportGH15LDCFile />
+                  {tab.panelName === "RawFiles" && (
+                    <ImportRawFiles
+                      subPanel={tab.panelName}
+                      entity={"ImportDeductee"}
+                    />
                   )}
-                  {tab.panelName === "ImportRefundData" && <ImportRefundData />}
-                  {tab.panelName === "ImportPanDetails" && <ImportPanDetails />}
-                  {tab.panelName === "ImportCustomerDetails" && (
-                    <ImportCustomerDetails />
+                  {tab.panelName === "GLFiles" && (
+                    <ImportGLFiles
+                      subPanel={tab.panelName}
+                      entity={"ImportDeductee"}
+                    />
+                  )}
+                  {tab.panelName === "GH15AndLDCFile" && (
+                    <ImportGH15LDCFile
+                      subPanel={tab.panelName}
+                      entity={"ImportDeductee"}
+                    />
+                  )}
+                  {tab.panelName === "RefundData" && (
+                    <ImportRefundData
+                      subPanel={tab.panelName}
+                      entity={"ImportDeductee"}
+                    />
+                  )}
+                  {tab.panelName === "PanDetails" && (
+                    <ImportPanDetails
+                      subPanel={tab.panelName}
+                      entity={"ImportDeductee"}
+                    />
+                  )}
+                  {tab.panelName === "CustomerDetails" && (
+                    <ImportCustomerDetails
+                      subPanel={tab.panelName}
+                      entity={"ImportDeductee"}
+                    />
                   )}
                 </TabPanel>
               ))}

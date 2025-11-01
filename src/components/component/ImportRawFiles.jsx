@@ -1,31 +1,22 @@
 import common from "@/common/common";
 import statusContext from "@/context/ModalsContext/statusContext";
-import staticDataContext from "@/context/staticDataContext";
 import { errorMessage } from "@/lib/utils";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportRawFiles = () => {
-  const entity = "ImportDeductee";
-
+const ImportRawFiles = ({ entity, subpanel }) => {
   const { params } = useParams();
-  // Data from context
-  const { typeOfFile } = useContext(staticDataContext);
   const { showSuccess, showError } = useContext(statusContext);
 
-  const fileType = Array.isArray(typeOfFile) ? typeOfFile[0] : "";
+  // const [selectedDocument, setSelectedDocuments] = useState("");
 
   const handleProcessButtonClick = async (processName) => {
-    const parsedParams = JSON.parse(params);
-
-    const formData = {
-      ...parsedParams,
-      typeOfFile: fileType,
-      processName: processName,
-    };
-
     try {
-      const response = await common.getStartProcess(entity, formData);
+      const response = await common.getStartProcess(
+        entity,
+        params,
+        processName
+      );
       showSuccess(response.data.successMsg);
     } catch (error) {
       showError(
@@ -34,6 +25,7 @@ const ImportRawFiles = () => {
       console.error(error);
     }
   };
+  console.log(subpanel);
 
   return (
     <>

@@ -1,31 +1,22 @@
 import common from "@/common/common";
 import statusContext from "@/context/ModalsContext/statusContext";
-import staticDataContext from "@/context/staticDataContext";
 import { errorMessage } from "@/lib/utils";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportRefundData = () => {
-  const entity = "ImportDeductee";
-
+const ImportRefundData = ({ entity, subpanel }) => {
   const { params } = useParams();
-  // Data from context
-  const { typeOfFile } = useContext(staticDataContext);
   const { showSuccess, showError } = useContext(statusContext);
 
-  const fileType = Array.isArray(typeOfFile) ? typeOfFile[0] : "";
+  // const [selectedDocument, setSelectedDocuments] = useState("");
 
   const handleProcessButtonClick = async (processName) => {
-    const parsedParams = JSON.parse(params);
-
-    const formData = {
-      ...parsedParams,
-      typeOfFile: fileType,
-      processName: processName,
-    };
-
     try {
-      const response = await common.getStartProcess(entity, formData);
+      const response = await common.getStartProcess(
+        entity,
+        params,
+        processName
+      );
       showSuccess(response.data.successMsg);
     } catch (error) {
       showError(
@@ -34,6 +25,7 @@ const ImportRefundData = () => {
       console.error(error);
     }
   };
+  console.log(subpanel);
   return (
     <>
       {/* Import File Section */}
@@ -52,7 +44,7 @@ const ImportRefundData = () => {
         <button className="btnBorder lightCyan btn">
           <img
             className="h-[35px] w-[35px] mix-blend-multiply"
-             src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
+            src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
             alt="Import"
           />
           <span>Import</span>
@@ -67,7 +59,7 @@ const ImportRefundData = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/calculator.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/calculator.gif`}
               alt="Export to Excel Button"
               className="h-[30px] mix-blend-multiply"
             />
@@ -82,7 +74,7 @@ const ImportRefundData = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/generateexcelfile.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/generateexcelfile.gif`}
               alt="Export to Excel Button"
               className="h-[30px] mix-blend-multiply"
             />
@@ -97,7 +89,7 @@ const ImportRefundData = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/GenerateExcel.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/GenerateExcel.gif`}
               alt="Launch Icon"
               className="h-[30px] w-[35px] mix-blend-multiply"
             />
@@ -113,7 +105,7 @@ const ImportRefundData = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/process.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/process.gif`}
               alt="Launch Icon"
               className="h-[30px] w-[35px] mix-blend-multiply"
             />
@@ -132,7 +124,7 @@ const ImportRefundData = () => {
             }
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/ValidateExcel.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/ValidateExcel.gif`}
               alt="Search Icon"
               className="h-7 mix-blend-multiply"
             />
@@ -149,7 +141,7 @@ const ImportRefundData = () => {
             onClick={() => handleProcessButtonClick("GenerateFormatFile")}
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
               alt="Launch Icon"
               className="h-[30px] w-[35px] mix-blend-multiply"
             />

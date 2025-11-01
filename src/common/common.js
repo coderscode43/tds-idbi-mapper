@@ -1,3 +1,4 @@
+import { parsedParams } from "@/lib/utils";
 import {
   addFileInFolder,
   addFolder,
@@ -67,7 +68,12 @@ const common = {
     return await gotoLastLocation(lastLocation, lastPart);
   },
 
-  getStartProcess: async (entity, formData) => {
+  getStartProcess: async (entity, params, processName) => {
+    const data = parsedParams(params);
+    const formData = {
+      ...data,
+      processName: processName,
+    };
     return await startProcess(entity, formData);
   },
 

@@ -1,31 +1,22 @@
 import common from "@/common/common";
 import statusContext from "@/context/ModalsContext/statusContext";
-import staticDataContext from "@/context/staticDataContext";
 import { errorMessage } from "@/lib/utils";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportGH15 = () => {
-  const entity = "ImportDeductee";
-
+const ImportGH15 = ({ entity, subpanel }) => {
   const { params } = useParams();
-  // Data from context
-  const { typeOfFile } = useContext(staticDataContext);
   const { showSuccess, showError } = useContext(statusContext);
 
-  const fileType = Array.isArray(typeOfFile) ? typeOfFile[0] : "";
+  // const [selectedDocument, setSelectedDocuments] = useState("");
 
   const handleProcessButtonClick = async (processName) => {
-    const parsedParams = JSON.parse(params);
-
-    const formData = {
-      ...parsedParams,
-      typeOfFile: fileType,
-      processName: processName,
-    };
-
     try {
-      const response = await common.getStartProcess(entity, formData);
+      const response = await common.getStartProcess(
+        entity,
+        params,
+        processName
+      );
       showSuccess(response.data.successMsg);
     } catch (error) {
       showError(
@@ -34,6 +25,7 @@ const ImportGH15 = () => {
       console.error(error);
     }
   };
+  console.log(subpanel);
 
   return (
     <>
@@ -45,12 +37,16 @@ const ImportGH15 = () => {
           </label>
           <input
             type="file"
-            name="branchName"
-            id="branchName"
+            name="importFile"
+            // onChange={(e) => setSelectedDocuments(e.target.files[0])}
+            id="importFile"
             className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 file:mr-3 file:cursor-pointer focus:outline-none"
           />
         </div>
-        <button className="btnBorder lightCyan btn">
+        <button
+          className="btnBorder lightCyan btn"
+          // onClick={() => handleImport("GH15")}
+        >
           <img
             className="h-[35px] w-[35px] mix-blend-multiply"
             src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}

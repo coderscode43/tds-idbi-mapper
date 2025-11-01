@@ -1,31 +1,22 @@
 import common from "@/common/common";
 import statusContext from "@/context/ModalsContext/statusContext";
-import staticDataContext from "@/context/staticDataContext";
 import { errorMessage } from "@/lib/utils";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportGLFiles = () => {
-  const entity = "ImportDeductee";
-
+const ImportGLFiles = ({ entity, subpanel }) => {
   const { params } = useParams();
-  // Data from context
-  const { typeOfFile } = useContext(staticDataContext);
   const { showSuccess, showError } = useContext(statusContext);
 
-  const fileType = Array.isArray(typeOfFile) ? typeOfFile[0] : "";
+  // const [selectedDocument, setSelectedDocuments] = useState("");
 
   const handleProcessButtonClick = async (processName) => {
-    const parsedParams = JSON.parse(params);
-
-    const formData = {
-      ...parsedParams,
-      typeOfFile: fileType,
-      processName: processName,
-    };
-
     try {
-      const response = await common.getStartProcess(entity, formData);
+      const response = await common.getStartProcess(
+        entity,
+        params,
+        processName
+      );
       showSuccess(response.data.successMsg);
     } catch (error) {
       showError(
@@ -34,6 +25,7 @@ const ImportGLFiles = () => {
       console.error(error);
     }
   };
+  console.log(subpanel);
   return (
     <>
       {/* Import File Section */}
@@ -59,7 +51,7 @@ const ImportGLFiles = () => {
           <button className="btnBorder lightCyan btn mt-3">
             <img
               className="h-[30px] w-[35px] mix-blend-multiply"
-               src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
               alt="Import"
             />
             <span>Import File</span>
@@ -84,7 +76,7 @@ const ImportGLFiles = () => {
           <button className="btnBorder lightCyan btn mt-3">
             <img
               className="h-[30px] w-[35px] mix-blend-multiply"
-               src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
               alt="Import"
             />
             <span>Import File</span>
@@ -92,7 +84,7 @@ const ImportGLFiles = () => {
         </div>
       </div>
 
-       {/* Buttons Section  */}
+      {/* Buttons Section  */}
       <div className="mt-5 rounded-md border border-gray-100 shadow-md">
         <div className="flex items-center-safe justify-between gap-2 p-5">
           {/* GL Reconciliation Button  */}
@@ -101,7 +93,7 @@ const ImportGLFiles = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/calculator.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/calculator.gif`}
               alt="Export to Excel Button"
               className="h-[30px] mix-blend-multiply"
             />
@@ -116,7 +108,7 @@ const ImportGLFiles = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/generateexcelfile.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/generateexcelfile.gif`}
               alt="Export to Excel Button"
               className="h-[30px] mix-blend-multiply"
             />
@@ -131,7 +123,7 @@ const ImportGLFiles = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/GenerateExcel.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/GenerateExcel.gif`}
               alt="Launch Icon"
               className="h-[30px] w-[35px] mix-blend-multiply"
             />
@@ -147,7 +139,7 @@ const ImportGLFiles = () => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/process.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/process.gif`}
               alt="Launch Icon"
               className="h-[30px] w-[35px] mix-blend-multiply"
             />
@@ -166,7 +158,7 @@ const ImportGLFiles = () => {
             }
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/ValidateExcel.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/ValidateExcel.gif`}
               alt="Search Icon"
               className="h-7 mix-blend-multiply"
             />
@@ -183,7 +175,7 @@ const ImportGLFiles = () => {
             onClick={() => handleProcessButtonClick("GenerateFormatFile")}
           >
             <img
-               src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
               alt="Launch Icon"
               className="h-[30px] w-[35px] mix-blend-multiply"
             />

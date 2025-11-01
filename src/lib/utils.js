@@ -104,3 +104,5 @@ export const monthMaxDays = {
   November: 30,
   December: 31,
 };
+
+export const parsedParams= (params) => JSON.parse(params);
