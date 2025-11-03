@@ -88,7 +88,7 @@ const AddFolderModal = ({
         {/* Modal Body */}
         <div className="space-y-4 px-6 py-5">
           <label className="block font-medium text-gray-700">
-            Select a folder:
+            Select a folder with Files:
           </label>
           <input
             type="file"

@@ -10,6 +10,7 @@ import {
   generateZip,
   gotoFolder,
   gotoLastLocation,
+  importFile,
   paginationListData,
   paginationWithSearchListData,
   processCancelled,
@@ -103,6 +104,14 @@ const common = {
 
   getCreateDayFolder: async (formData) => {
     return await createDayFolder(formData);
+  },
+
+  getImportFile: async (selectedDocument, subpanel, parameters) => {
+    const param = parsedParams(parameters);
+    if (!selectedDocument) {
+      throw new Error("Please select a document before importing.");
+    }
+    return await importFile(selectedDocument, subpanel, param);
   },
 };
 

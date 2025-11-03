@@ -8,7 +8,7 @@ import ImportGH15 from "./ImportGH15";
 import ImportGH15LDCFile from "./ImportGH15LDCFile";
 import ImportGLFiles from "./ImportGLFiles";
 import ImportNewAccount from "./ImportNewAccount";
-import ImportNoRefund from "./ImportNoRefund";
+import ImportNoTDS from "./ImportNoTDS";
 import ImportPanDetails from "./ImportPanDetails";
 import ImportRawFiles from "./ImportRawFiles";
 import ImportRefundData from "./ImportRefundData";
@@ -23,7 +23,7 @@ const Daily = [
   { name: "Import GH15 ", panelName: "GH15" },
   { name: "Import New A/C", panelName: "NewAccount" },
   { name: "Import Tax Change Code", panelName: "TaxChangeCode" },
-  { name: "Import No TDS", panelName: "NoRefund" },
+  { name: "Import No TDS", panelName: "NoTDS" },
 ];
 
 const Monthly = [
@@ -132,26 +132,23 @@ const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
               {Daily.map((tab) => (
                 <TabPanel key={tab.panelName}>
                   {tab.panelName === "GH15" && (
-                    <ImportGH15
-                      subPanel={tab.panelName}
-                      entity={"ImportDeductee"}
-                    />
+                    <ImportGH15 subPanel={["GH15"]} entity={"ImportDeductee"} />
                   )}
                   {tab.panelName === "NewAccount" && (
                     <ImportNewAccount
-                      subPanel={tab.panelName}
+                      subPanel={["New Account"]}
                       entity={"ImportDeductee"}
                     />
                   )}
                   {tab.panelName === "TaxChangeCode" && (
                     <ImportTaxChangeCode
-                      subPanel={tab.panelName}
+                      subPanel={["Tax Change Code"]}
                       entity={"ImportDeductee"}
                     />
                   )}
-                  {tab.panelName === "NoRefund" && (
-                    <ImportNoRefund
-                      subPanel={tab.panelName}
+                  {tab.panelName === "NoTDS" && (
+                    <ImportNoTDS
+                      subPanel={["No TDS"]}
                       entity={"ImportDeductee"}
                     />
                   )}
@@ -188,37 +185,37 @@ const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
                 <TabPanel key={tab.panelName}>
                   {tab.panelName === "RawFiles" && (
                     <ImportRawFiles
-                      subPanel={tab.panelName}
+                      subPanel={["Raw Files"]}
                       entity={"ImportDeductee"}
                     />
                   )}
                   {tab.panelName === "GLFiles" && (
                     <ImportGLFiles
-                      subPanel={tab.panelName}
+                      subPanel={["GL Files"]}
                       entity={"ImportDeductee"}
                     />
                   )}
                   {tab.panelName === "GH15AndLDCFile" && (
                     <ImportGH15LDCFile
-                      subPanel={tab.panelName}
+                      subPanel={["GH15 And LDC File"]}
                       entity={"ImportDeductee"}
                     />
                   )}
                   {tab.panelName === "RefundData" && (
                     <ImportRefundData
-                      subPanel={tab.panelName}
+                      subPanel={["Refund Data"]}
                       entity={"ImportDeductee"}
                     />
                   )}
                   {tab.panelName === "PanDetails" && (
                     <ImportPanDetails
-                      subPanel={tab.panelName}
+                      subPanel={["Pan Details"]}
                       entity={"ImportDeductee"}
                     />
                   )}
                   {tab.panelName === "CustomerDetails" && (
                     <ImportCustomerDetails
-                      subPanel={tab.panelName}
+                      subPanel={["Customer Details"]}
                       entity={"ImportDeductee"}
                     />
                   )}

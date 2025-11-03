@@ -1,14 +1,15 @@
 import common from "@/common/common";
 import statusContext from "@/context/ModalsContext/statusContext";
 import { errorMessage } from "@/lib/utils";
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportGH15 = ({ entity, subpanel }) => {
+const ImportGH15 = ({ subPanel, entity }) => {
   const { params } = useParams();
   const { showSuccess, showError } = useContext(statusContext);
+  const fileInputRef = useRef({});
 
-  // const [selectedDocument, setSelectedDocuments] = useState("");
+  const [selectedDocument, setSelectedDocuments] = useState("");
 
   const handleProcessButtonClick = async (processName) => {
     try {
@@ -17,7 +18,7 @@ const ImportGH15 = ({ entity, subpanel }) => {
         params,
         processName
       );
-      showSuccess(response.data.successMsg);
+      showSuccess(response.data.message);
     } catch (error) {
       showError(
         `Cannot start process ${processName.replace(/(?!^)([A-Z])/g, " $1")}: ${errorMessage(error)}`
@@ -25,7 +26,26 @@ const ImportGH15 = ({ entity, subpanel }) => {
       console.error(error);
     }
   };
-  console.log(subpanel);
+
+  const handleImport = async () => {
+    try {
+      const response = await common.getImportFile(
+        selectedDocument,
+        subPanel,
+        params
+      );
+      setSelectedDocuments({});
+      showSuccess(response.data.successMsg);
+      // Reset the specific file input
+      if (fileInputRef.current[0]) {
+        fileInputRef.current[0].value = "";
+      }
+    } catch (error) {
+      showError(`Cannot start process ${subPanel}: ${errorMessage(error)}`);
+      console.error(error);
+      setSelectedDocuments({});
+    }
+  };
 
   return (
     <>
@@ -38,15 +58,13 @@ const ImportGH15 = ({ entity, subpanel }) => {
           <input
             type="file"
             name="importFile"
-            // onChange={(e) => setSelectedDocuments(e.target.files[0])}
+            ref={(el) => (fileInputRef.current[0] = el)}
+            onChange={(e) => setSelectedDocuments(e.target.files[0])}
             id="importFile"
             className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 file:mr-3 file:cursor-pointer focus:outline-none"
           />
         </div>
-        <button
-          className="btnBorder lightCyan btn"
-          // onClick={() => handleImport("GH15")}
-        >
+        <button className="btnBorder lightCyan btn" onClick={handleImport}>
           <img
             className="h-[35px] w-[35px] mix-blend-multiply"
             src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}

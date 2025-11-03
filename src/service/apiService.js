@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Type } from "lucide-react";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL ?? "/";
 axios.defaults.withCredentials = true;
@@ -160,3 +159,30 @@ export const logout = async () => {
   }
 };
 
+
+export const importFile = async (selectedDocument, subpanel, param) => {
+  const data = {
+    pan: param.pan,
+    fy: param.fy,
+    month: param.month,
+    quarter: param.quarter,
+    typeOfFile: param.typeOfFile,
+    panelName: param.panelName,
+    pageName: param.pageName,
+    processName: "Bulk Import",
+    subPanel: subpanel,
+  };
+  const formData = new FormData();
+  formData.append("file", selectedDocument);
+  formData.append(
+    "formData",
+    new Blob([JSON.stringify(data)], { type: "application/json" })
+  );
+
+  const response = await axios.post(`apiImportDeductee/importFile`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response;
+};

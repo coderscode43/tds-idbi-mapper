@@ -9,12 +9,7 @@ import DynamicTable from "@/components/tables/DynamicTable";
 import statusContext from "@/context/ModalsContext/statusContext";
 import staticDataContext from "@/context/staticDataContext";
 import useLockBodyScroll from "@/hooks/useLockBodyScroll";
-import {
-  dateWithTime,
-  dayList,
-  errorMessage,
-  refinedSearchParams,
-} from "@/lib/utils";
+import { dateWithTime, errorMessage, refinedSearchParams } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -46,6 +41,7 @@ const ImportDeductee = () => {
   const [showAddDayFolder, setShowAddDayFolder] = useState(false);
   const [showOpenFolderModal, setShowOpenFolderModal] = useState(false);
   const [additionalDetailModal, setAdditionalDetailModal] = useState(false);
+  const [dayList, setDayList] = useState([]);
 
   const [searchParams, setSearchParams] = useState({
     fy: "",
@@ -162,13 +158,26 @@ const ImportDeductee = () => {
           ? updatedSearchParams.day
           : crtDay,
       panelName: updatedSearchParams.panelName || "Daily Remitance",
-      pageName: pageName,
+      // pageName: pageName,
+      pageName:
+        updatedSearchParams.typeOfFile === typeOfFile[1]
+          ? "withDrawal"
+          : pageName,
     };
 
     const refinedParams = refinedSearchParams(searchObj);
 
     // Navigate to the updated URL
-    navigate(`/home/listSearch/importDeductee/${refinedParams}`);
+    // navigate(`/home/listSearch/importDeductee/${refinedParams}`);
+
+    // // 🔥 If the user selects Withdrawal, redirect to another page
+    if (name === "typeOfFile" && value === "Interest") {
+      navigate(`/home/listSearch/importDeductee/${refinedParams}`);
+    } else if (name === "typeOfFile") {
+      navigate(`/home/listSearch/withDrawal/${refinedParams}`);
+    } else {
+      navigate(`/home/listSearch/importDeductee/${refinedParams}`);
+    }
   };
 
   const handleAdditionalDetailModal = async () => {
@@ -281,7 +290,7 @@ const ImportDeductee = () => {
               {parsedParams?.panelName === "Daily Remitance" && (
                 <FilterSelect
                   label="Date"
-                  name="date"
+                  name="day"
                   options={dayList}
                   value={crtDay}
                   onChange={(value) =>
@@ -405,6 +414,7 @@ const ImportDeductee = () => {
         <AddDayFolderModal
           setShowAddDayFolder={setShowAddDayFolder}
           parsedParams={parsedParams}
+          setDayList={setDayList}
         />
       )}
     </>

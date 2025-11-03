@@ -5,7 +5,11 @@ import ErrorMessage from "../component/ErrorMessage";
 import { errorMessage, monthMaxDays } from "@/lib/utils";
 import common from "@/common/common";
 
-const AddDayFolderModal = ({ setShowAddDayFolder, parsedParams }) => {
+const AddDayFolderModal = ({
+  setShowAddDayFolder,
+  parsedParams,
+  setDayList,
+}) => {
   const { showError, showSuccess } = useContext(statusContext);
 
   const [day, setDay] = useState("");
@@ -62,6 +66,7 @@ const AddDayFolderModal = ({ setShowAddDayFolder, parsedParams }) => {
 
     try {
       const response = await common.getCreateDayFolder(formData);
+      setDayList(response?.data?.entities)
       showSuccess(response?.data?.successMsg || "Folder created successfully!");
       setShowAddDayFolder(false);
     } catch (error) {
@@ -96,7 +101,7 @@ const AddDayFolderModal = ({ setShowAddDayFolder, parsedParams }) => {
                 type="text"
                 id="day"
                 name="day"
-                value={day||""}
+                value={day || ""}
                 maxLength={2} // user can only type 2 digits
                 placeholder="DD" // show that only 2 digits are allowed
                 onChange={handleInputChange}
