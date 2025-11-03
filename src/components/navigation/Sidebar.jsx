@@ -3,6 +3,7 @@ import { refinedSearchParams } from "@/lib/utils";
 import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import DynamicModal from "../component/DynamicModal";
+import { logout } from "@/service/apiService";
 
 const navItems = [
   {
@@ -118,6 +119,9 @@ const Sidebar = ({ sideBarOpen }) => {
           description="Do you want to logout !!!"
           isModalOpen={() => setIsModalOpen(true)}
           closeModal={closeModal}
+          handler={() => {
+            logout();
+          }}
         />
       )}
     </>

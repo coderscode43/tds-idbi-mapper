@@ -3,6 +3,7 @@ import { useState } from "react";
 import DynamicModal from "./DynamicModal";
 import { useContext } from "react";
 import staticDataContext from "@/context/staticDataContext";
+import { logout } from "@/service/apiService";
 
 const DropdownMenu = () => {
   const { userName } = useContext(staticDataContext);
@@ -60,6 +61,9 @@ const DropdownMenu = () => {
           description="Do you want to logout !!!"
           isModalOpen={() => setIsModalOpen(true)}
           closeModal={closeModal}
+          handler={() => {
+            logout();
+          }}
         />
       )}
     </>

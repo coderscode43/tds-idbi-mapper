@@ -144,3 +144,19 @@ export const createDayFolder = async (formData) => {
   );
   return response;
 };
+
+export const logout = async () => {
+  try {
+    const response = await axios.post("/logout");
+    const currentUrl = window.location.href;
+
+    const redirectUrl = `${response.data}?redirect=${encodeURIComponent(
+      currentUrl
+    )}`;
+
+    window.location.href = redirectUrl;
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+};
+
