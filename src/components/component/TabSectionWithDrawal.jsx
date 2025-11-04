@@ -4,8 +4,6 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import ImportGH15LDCFile from "./ImportGH15LDCFile";
-import ImportRefundData from "./ImportRefundData";
-import ImportGLFiles from "./ImportGLFiles";
 import ImportGLFilesWithDrawal from "./ImportGLFilesWithDrawal";
 
 const categories = [
@@ -95,20 +93,19 @@ const TabSectionWithDrawal = ({ searchParams, setSearchParams }) => {
                   ))}
                 </TabList>
 
-                <TabPanels className="mt-3">
-                  <TabPanel>
-                    <ImportGH15LDCFile />
-                  </TabPanel>
-                  <TabPanel>
-                    <ImportGH15LDCFile />
-                  </TabPanel>
-                </TabPanels>
+                <TabPanels className="mt-3"></TabPanels>
               </TabGroup>
             </>
             {/* End of Daily Remitance  */}
           </TabPanel>
           <TabPanel>
             <ImportGLFilesWithDrawal />
+          </TabPanel>
+          <TabPanel>
+            <ImportGH15LDCFile />
+          </TabPanel>
+          <TabPanel>
+            <ImportGH15LDCFile />
           </TabPanel>
         </TabPanels>
       </TabGroup>

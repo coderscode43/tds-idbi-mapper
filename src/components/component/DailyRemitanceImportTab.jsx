@@ -4,7 +4,7 @@ import { errorMessage } from "@/lib/utils";
 import { useContext, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportTaxChangeCode = ({ subPanel, entity }) => {
+const DailyRemitanceImportTab = ({ subPanel, entity }) => {
   const { params } = useParams();
   const { showSuccess, showError } = useContext(statusContext);
   const fileInputRef = useRef({});
@@ -139,4 +139,4 @@ const ImportTaxChangeCode = ({ subPanel, entity }) => {
   );
 };
 
-export default ImportTaxChangeCode;
+export default DailyRemitanceImportTab;

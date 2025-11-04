@@ -1,10 +1,11 @@
 import staticDataContext from "@/context/staticDataContext";
 import { refinedSearchParams } from "@/lib/utils";
 import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import DynamicModal from "../component/DynamicModal";
 import { logout } from "@/service/apiService";
 
+// Sidebar navigation items
 const navItems = [
   {
     id: "importDeductee",
@@ -29,6 +30,8 @@ const navItems = [
 ];
 
 const Sidebar = ({ sideBarOpen }) => {
+  // Get current location for active tab detection
+  const location = useLocation();
   const { crtFy, crtMonth, crtQuarter, ClientPAN, typeOfFile, crtDay } =
     useContext(staticDataContext);
 
@@ -55,17 +58,32 @@ const Sidebar = ({ sideBarOpen }) => {
                     typeOfFile:
                       page === "importDeductee"
                         ? typeOfFile
-                          ? typeOfFile[0]
+                          ? (typeOfFile[0] ?? "")
                           : typeOfFile
-                        : null,
+                        : page === "withDrawal"
+                          ? typeOfFile
+                            ? (typeOfFile[1] ?? "")
+                            : typeOfFile
+                          : null,
                     day: panelName === "Daily Remitance" ? crtDay : null,
-                    panelName: panelName || "", // only include if defined
+                    panelName: panelName || "",
                     pageName:
                       page === "importDeductee"
                         ? "Import Deductee"
                         : page || "",
                   };
+
                   const refinedParams = refinedSearchParams(searchObj);
+
+                  // Determine base URL for active state detection
+                  const basePath =
+                    id !== "settings"
+                      ? `/home/listSearch/${page}`
+                      : `/home/list/${page}`;
+
+                  // Check if current path starts with the base path
+                  const active = location.pathname.startsWith(basePath);
+
                   return (
                     <li key={id}>
                       <NavLink
@@ -74,17 +92,18 @@ const Sidebar = ({ sideBarOpen }) => {
                             ? `/home/listSearch/${page}/${refinedParams}`
                             : `/home/list/${page}`
                         }
-                        className={({ isActive }) =>
-                          [
-                            "relative flex cursor-pointer items-center justify-between py-2 font-medium whitespace-nowrap text-black transition-all after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:bg-[#72a83a] after:transition-transform after:duration-300",
-                            isActive
-                              ? "after:scale-x-100"
-                              : "after:scale-x-0 hover:after:scale-x-100",
-                          ].join(" ")
-                        }
+                        className={[
+                          "relative flex cursor-pointer items-center justify-between py-2 font-medium whitespace-nowrap text-black transition-all after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:bg-[#72a83a] after:transition-transform after:duration-300",
+                          active
+                            ? "after:scale-x-100"
+                            : "after:scale-x-0 hover:after:scale-x-100",
+                        ].join(" ")}
                       >
+                        {/* Label (visible when sidebar is open or on hover) */}
                         <div
-                          className={`w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 ease-in-out group-hover:ml-2 group-hover:w-auto group-hover:opacity-100 ${sideBarOpen ? "ml-2 w-auto opacity-100" : " "}`}
+                          className={`w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 ease-in-out group-hover:ml-2 group-hover:w-auto group-hover:opacity-100 ${
+                            sideBarOpen ? "ml-2 w-auto opacity-100" : ""
+                          }`}
                           style={{
                             transitionProperty: "opacity, width, margin-left",
                           }}
@@ -112,16 +131,14 @@ const Sidebar = ({ sideBarOpen }) => {
         </nav>
       </div>
 
-      {/* Render the modal only when open */}
+      {/* Logout confirmation modal */}
       {isModalOpen && (
         <DynamicModal
           title="Are you sure?"
           description="Do you want to logout !!!"
           isModalOpen={() => setIsModalOpen(true)}
           closeModal={closeModal}
-          handler={() => {
-            logout();
-          }}
+          handler={() => logout()}
         />
       )}
     </>

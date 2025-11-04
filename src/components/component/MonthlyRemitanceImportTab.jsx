@@ -4,7 +4,7 @@ import { errorMessage } from "@/lib/utils";
 import { useContext, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const ImportNewAccount = ({ subPanel, entity }) => {
+const MonthlyRemitanceImportTab = ({ subPanel, entity }) => {
   const { params } = useParams();
   const { showSuccess, showError } = useContext(statusContext);
   const fileInputRef = useRef({});
@@ -46,7 +46,6 @@ const ImportNewAccount = ({ subPanel, entity }) => {
       setSelectedDocuments({});
     }
   };
-
   return (
     <>
       {/* Import File Section */}
@@ -75,63 +74,100 @@ const ImportNewAccount = ({ subPanel, entity }) => {
       </div>
       {/* Buttons Section  */}
       <div className="mt-5 rounded-md border border-gray-100 shadow-md">
-        <div className="flex items-center-safe justify-between gap-4 p-5">
-          {/* Validate 15 GH */}
+        <div className="flex items-center-safe justify-between gap-2 p-5">
+          {/* GL Reconciliation Button  */}
           <button
-            className="btnBorder yellow btn"
-            onClick={() => handleProcessButtonClick("Validate15GH")}
+            className="btnBorder DarkGreen btn"
+            onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-              src={`${import.meta.env.BASE_URL}images/gificons/challandetails.gif`}
-              alt="Search Icon"
-              className="h-7 mix-blend-multiply"
+              src={`${import.meta.env.BASE_URL}images/gificons/calculator.gif`}
+              alt="Export to Excel Button"
+              className="h-[30px] mix-blend-multiply"
             />
-            <span className="btntext text-[16px]">Validate 15 GH</span>
+            <span className="w-full text-[16px]">GL Reconciliation</span>
           </button>
           <span>
             <i className="fa-solid fa-right-long text-gray-700"></i>
           </span>
-          {/* Validate new A/C No */}
+          {/* Generate TTUM Report Button */}
           <button
-            className="btnBorder yellow btn"
-            onClick={() => handleProcessButtonClick("ValidateNewAccount")}
+            className="btnBorder Green btn"
+            onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-              src={`${import.meta.env.BASE_URL}images/gificons/agreement.gif`}
-              alt="Search Icon"
-              className="h-7 mix-blend-multiply"
+              src={`${import.meta.env.BASE_URL}images/gificons/generateexcelfile.gif`}
+              alt="Export to Excel Button"
+              className="h-[30px] mix-blend-multiply"
             />
-            <span className="btntext text-[16px]">Validate New A/C No </span>
+            <span className="w-full text-[16px]">Generate TTUM Report</span>
           </button>
           <span>
             <i className="fa-solid fa-right-long text-gray-700"></i>
           </span>
-          {/* Validate Tax Code*/}
+          {/* Generate Other OA & OE Excel */}
           <button
-            className="btnBorder yellow btn"
-            onClick={() => handleProcessButtonClick("ValidateTaxCode")}
+            className="btnBorder DarkGreen btn"
+            onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-              src={`${import.meta.env.BASE_URL}images/gificons/change.gif`}
-              alt="Search Icon"
-              className="h-7 mix-blend-multiply"
+              src={`${import.meta.env.BASE_URL}images/gificons/GenerateExcel.gif`}
+              alt="Launch Icon"
+              className="h-[30px] w-[35px] mix-blend-multiply"
             />
-            <span className="btntext text-[16px]">Validate Tax Code</span>
+            <span className="btntext text-[16px]">
+              Generate Other OA & OE Excel
+            </span>
+          </button>
+        </div>
+        <div className="flex items-center-safe justify-between gap-2 p-5">
+          {/* Generate Customer ID & PAN List  */}
+          <button
+            className="btnBorder Green btn"
+            onClick={() => handleProcessButtonClick("GenerateReport")}
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}images/gificons/process.gif`}
+              alt="Launch Icon"
+              className="h-[30px] w-[35px] mix-blend-multiply"
+            />
+            <span className="btntext text-[16px]">
+              Generate Customer ID & PAN List
+            </span>
           </button>
           <span>
             <i className="fa-solid fa-right-long text-gray-700"></i>
           </span>
-          {/* Validate  New TDS */}
+          {/*  Validate & Generate */}
           <button
-            className="btnBorder yellow btn"
-            onClick={() => handleProcessButtonClick("ValidateNewTds")}
+            className="btnBorder DarkGreen btn"
+            onClick={() =>
+              handleProcessButtonClick("ValidateDataAndSegregateData")
+            }
           >
             <img
-              src={`${import.meta.env.BASE_URL}images/gificons/financing.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/ValidateExcel.gif`}
               alt="Search Icon"
               className="h-7 mix-blend-multiply"
             />
-            <span className="btntext text-[16px]">Validate New TDS</span>
+            <span className="btntext text-[16px]">
+              Validate & Generate Format File
+            </span>
+          </button>
+          <span>
+            <i className="fa-solid fa-right-long text-gray-700"></i>
+          </span>
+          {/* Validate & Generate  */}
+          <button
+            className="btnBorder yellow btn"
+            onClick={() => handleProcessButtonClick("GenerateFormatFile")}
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
+              alt="Launch Icon"
+              className="h-[30px] w-[35px] mix-blend-multiply"
+            />
+            <span className="btntext text-[16px]">Generate Format File</span>
           </button>
         </div>
       </div>
@@ -139,4 +175,4 @@ const ImportNewAccount = ({ subPanel, entity }) => {
   );
 };
 
-export default ImportNewAccount;
+export default MonthlyRemitanceImportTab;

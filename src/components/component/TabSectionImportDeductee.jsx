@@ -3,16 +3,11 @@ import { refinedSearchParams } from "@/lib/utils";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ImportCustomerDetails from "./ImportCustomerDetails";
+import DailyRemitanceImportTab from "./DailyRemitanceImportTab";
 import ImportGH15 from "./ImportGH15";
 import ImportGH15LDCFile from "./ImportGH15LDCFile";
 import ImportGLFiles from "./ImportGLFiles";
-import ImportNewAccount from "./ImportNewAccount";
-import ImportNoTDS from "./ImportNoTDS";
-import ImportPanDetails from "./ImportPanDetails";
-import ImportRawFiles from "./ImportRawFiles";
-import ImportRefundData from "./ImportRefundData";
-import ImportTaxChangeCode from "./ImportTaxChangeCode";
+import MonthlyRemitanceImportTab from "./MonthlyRemitanceImportTab";
 
 const categories = [
   { name: "Daily Remitance", panelName: "Daily Remitance" },
@@ -135,19 +130,19 @@ const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
                     <ImportGH15 subPanel={["GH15"]} entity={"ImportDeductee"} />
                   )}
                   {tab.panelName === "NewAccount" && (
-                    <ImportNewAccount
+                    <DailyRemitanceImportTab
                       subPanel={["New Account"]}
                       entity={"ImportDeductee"}
                     />
                   )}
                   {tab.panelName === "TaxChangeCode" && (
-                    <ImportTaxChangeCode
+                    <DailyRemitanceImportTab
                       subPanel={["Tax Change Code"]}
                       entity={"ImportDeductee"}
                     />
                   )}
                   {tab.panelName === "NoTDS" && (
-                    <ImportNoTDS
+                    <DailyRemitanceImportTab
                       subPanel={["No TDS"]}
                       entity={"ImportDeductee"}
                     />
@@ -184,7 +179,7 @@ const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
               {Monthly.map((tab) => (
                 <TabPanel key={tab.panelName}>
                   {tab.panelName === "RawFiles" && (
-                    <ImportRawFiles
+                    <MonthlyRemitanceImportTab
                       subPanel={["Raw Files"]}
                       entity={"ImportDeductee"}
                     />
@@ -202,19 +197,19 @@ const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
                     />
                   )}
                   {tab.panelName === "RefundData" && (
-                    <ImportRefundData
+                    <MonthlyRemitanceImportTab
                       subPanel={["Refund Data"]}
                       entity={"ImportDeductee"}
                     />
                   )}
                   {tab.panelName === "PanDetails" && (
-                    <ImportPanDetails
+                    <MonthlyRemitanceImportTab
                       subPanel={["Pan Details"]}
                       entity={"ImportDeductee"}
                     />
                   )}
                   {tab.panelName === "CustomerDetails" && (
-                    <ImportCustomerDetails
+                    <MonthlyRemitanceImportTab
                       subPanel={["Customer Details"]}
                       entity={"ImportDeductee"}
                     />
