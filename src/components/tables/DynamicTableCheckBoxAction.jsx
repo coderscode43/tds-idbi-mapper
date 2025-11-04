@@ -11,6 +11,7 @@ const DynamicTableCheckBoxAction = ({
   setSelectedRows,
   setSelectedRowsData,
   loading = false,
+  setLastLocation,
 }) => {
   const [lastLocation] = tableData;
 
@@ -137,6 +138,9 @@ const DynamicTableCheckBoxAction = ({
                         onDoubleClick={async () => {
                           const response = await common.getGotoFolder(data);
                           setFileListData(response?.data?.entities || []);
+                          setLastLocation(
+                            response?.data?.entities[0]?.lastLocation
+                          );
                           setSelectedRows([]); // to clear the checkbox selection
                           setSelectedRowsData([]); // to clear the checkbox selection
                         }}

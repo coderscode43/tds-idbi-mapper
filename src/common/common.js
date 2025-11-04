@@ -1,4 +1,4 @@
-import { parsedParams } from "@/lib/utils";
+import { parsedParams, refinedSearchParams } from "@/lib/utils";
 import {
   addFileInFolder,
   addFolder,
@@ -14,6 +14,7 @@ import {
   paginationListData,
   paginationWithSearchListData,
   processCancelled,
+  searchOpenFolder,
   startProcess,
 } from "@/service/apiService";
 
@@ -35,8 +36,9 @@ const common = {
     );
   },
 
-  getFileList: async (entity, formData) => {
-    return await fileList(entity, formData);
+  getFileList: async (formData) => {
+    const refinedFormData = refinedSearchParams(formData);
+    return await fileList(refinedFormData);
   },
 
   getAddFolder: async (formDataObj) => {
@@ -86,11 +88,24 @@ const common = {
     return await paginationWithSearchListData(entity, pageNo - 1, searchParams);
   },
 
-  getDownloadFile: async (filePath) => {
+  getDownloadFile: async (data) => {
+    // Construct the file path with proper slashes
+    const lastLocation = `${data.lastLocation}/${data.name}`;
+    // Replace / with ^ (or any placeholder) since backend replaces ^ back to /
+    const filePath = encodeURIComponent(lastLocation).replace(/%2F/g, "^");
     return await downloadFile(filePath);
   },
 
-  getFileDeleted: async (formDataObj) => {
+  getFileDeleted: async (selectedRowsData, lastLocation) => {
+    // Construct the file path with proper slashes
+    const formData = {
+      entity: {
+        deleteFileOrFolder: selectedRowsData,
+      },
+      lastLocation: lastLocation,
+    };
+
+    const formDataObj = JSON.stringify(formData);
     return await fileDeleted(formDataObj);
   },
 
@@ -98,7 +113,15 @@ const common = {
     return await processCancelled(processId);
   },
 
-  getGenerateZip: async (formDataObj) => {
+  getGenerateZip: async (selectedRowsData) => {
+    const lastLocation = `${selectedRowsData[0]?.lastLocation}`;
+    const formData = {
+      entity: {
+        downloadFileOrFolder: selectedRowsData[0],
+      },
+      lastLocation: lastLocation,
+    };
+    const formDataObj = JSON.stringify(formData);
     return await generateZip(formDataObj);
   },
 
@@ -112,6 +135,11 @@ const common = {
       throw new Error("Please select a document before importing.");
     }
     return await importFile(selectedDocument, subpanel, param);
+  },
+
+  getSearchOpenFolder: async (lastLocation, fileListData) => {
+    const lastIndexFile = fileListData[fileListData.length - 1];
+    return await searchOpenFolder(lastLocation, lastIndexFile);
   },
 };
 

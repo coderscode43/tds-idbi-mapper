@@ -13,7 +13,13 @@ import AddDocumentModal from "./AddDocumentModal";
 import AddFolderModal from "./AddFolderModal";
 import CreateFolderModal from "./CreateFolderModal";
 
-const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
+const OpenFolderModal = ({
+    onClose,
+    fileListData,
+    setFileListData,
+    lastLocation,
+    setLastLocation,
+}) => {
   const { showSuccess, showError } = useContext(statusContext);
 
   const [errors, setErrors] = useState({});
@@ -32,23 +38,30 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
     { key: "action", label: "Action" },
   ];
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    console.log(name, "Name");
-    console.log(value, "Value");
-  };
-
   const handleSearch = async () => {
-    console.log("hello ");
+   
+
+    try {
+      const response = await common.getSearchOpenFolder(lastLocation, fileListData);
+      setFileListData(response?.data?.entities);
+      setLastLocation(response?.data?.entities?.[0].lastLocation);
+      setSelectedRows([]);
+      setSelectedRowsData([]);
+    } catch (error) {
+      showError(
+        `Cannot search.
+       ${error?.response?.data?.entityName || ""}
+       ${errorMessage(error)}`
+      );
+    }
   };
 
   const handleBack = async () => {
-    const lastLocation = fileListData[0]?.lastLocation;
     const lastPart = lastLocation.substring(lastLocation.lastIndexOf("/") + 1);
-
     try {
       const response = await common.getGotoLastLocation(lastLocation, lastPart);
       setFileListData(response?.data?.entities);
+      setLastLocation(response?.data?.entities?.[0].lastLocation);
       setSelectedRows([]);
       setSelectedRowsData([]);
     } catch (error) {
@@ -58,12 +71,9 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
 
   const handleTableDownload = async (data) => {
     try {
-      // Construct the file path with proper slashes
-      const lastLocation = `${data.lastLocation}/${data.name}`;
-      // Replace / with ^ (or any placeholder) since backend replaces ^ back to /
-      const filePath = encodeURIComponent(lastLocation).replace(/%2F/g, "^");
-      const response = await common.getDownloadFile(filePath);
+      const response = await common.getDownloadFile(data);
       anyFileDownload(response);
+
       showSuccess(response?.data?.succesMsg || "File Downloaded Successfully");
     } catch (error) {
       showError(
@@ -74,7 +84,7 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
     }
   };
 
-  const validate = (min = 0, max = Infinity) => {
+  const validateFolderSelect = (min = 0, max = Infinity) => {
     const newErrors = {};
     let isValid = true;
 
@@ -95,47 +105,40 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-
-    if (!validate(1, Infinity)) return;
-    // Construct the file path with proper slashes
-    const lastLocation = `${selectedRowsData[0]?.lastLocation}`;
-    const formData = {
-      entity: {
-        deleteFileOrFolder: selectedRowsData,
-      },
-      lastLocation: lastLocation,
-    };
+    if (!validateFolderSelect(1, Infinity)) return;
     try {
-      const response = await common.getFileDeleted(JSON.stringify(formData));
+      const response = await common.getFileDeleted(
+        selectedRowsData,
+        lastLocation
+      );
       setFileListData(response?.data?.entities || []);
       showSuccess(response.data.successMsg);
       setSelectedRows([]);
       setSelectedRowsData([]);
     } catch (error) {
-      showError(errorMessage(error));
+      showError(
+        `Cannot Delete.
+       ${error?.response?.data?.entityName || ""}
+       ${errorMessage(error)}`
+      );
     }
   };
 
   const handleGenerateZip = async (e) => {
     e.preventDefault();
-
-    if (!validate(1, 1)) return;
-    // Construct the file path with proper slashes
-    const lastLocation = `${selectedRowsData[0]?.lastLocation}`;
-    const formData = {
-      entity: {
-        downloadFileOrFolder: selectedRowsData[0],
-      },
-      lastLocation: lastLocation,
-    };
+    if (!validateFolderSelect(1, 1)) return;
     try {
-      const response = await common.getGenerateZip(JSON.stringify(formData));
+      const response = await common.getGenerateZip(selectedRowsData);
       setFileListData(response?.data?.entities || []);
       showSuccess(response.data.successMsg);
       setSelectedRows([]);
       setSelectedRowsData([]);
     } catch (error) {
-      showError(errorMessage(error));
+      showError(
+        `Cannot Generate Zip.
+       ${error?.response?.data?.entityName || ""}
+       ${errorMessage(error)}`
+      );
     }
   };
 
@@ -161,13 +164,14 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
             {/* Top Buttons */}
             <div className="flex justify-end gap-3">
               <button
-                className="cursor-pointer space-x-1 rounded-md bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+                className="cursor-pointer rounded-lg bg-gradient-to-r from-cyan-500/95 to-blue-600 px-4 text-[16px] font-semibold text-white shadow-md transition-all duration-300 ease-in-out hover:scale-105 hover:from-cyan-600 hover:to-blue-700 hover:shadow-lg"
                 onClick={() => setShowAddFolderModal(true)}
               >
-                <i className="fa-solid fa-folder"></i> <span>Add Folder</span>
+                <i className="fa-solid fa-folder"></i>&nbsp;
+                <span>Add Folder</span>
               </button>
               <button
-                className="cursor-pointer space-x-1 rounded-md bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700"
+                className="cursor-pointer space-x-1 rounded-md bg-gradient-to-r from-[#a83838] to-[#ff0612] px-4 font-semibold text-white shadow-md transition-all duration-300 ease-in-out hover:scale-105 hover:from-red-700 hover:to-red-500 hover:shadow-lg"
                 onClick={() => setShowAddDocumentModal(true)}
               >
                 <i className="fa-solid fa-file"></i> <span>Add Document</span>
@@ -184,11 +188,13 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
             {/* Search Input */}
             <div className="flex gap-3">
               <input
+                id="lastLocation"
+                name="lastLocation"
                 type="text"
-                value={`${fileListData[0]?.lastLocation || ""}`}
+                value={lastLocation}
                 placeholder="Add Bulk Token Number"
                 className="flex-grow rounded-md border border-gray-300 px-4 py-1.5 text-[15px] text-gray-700 focus:outline-none"
-                onChange={handleInputChange}
+                onChange={(e) => setLastLocation(e.target.value)}
               />
               <button
                 className="cursor-pointer space-x-1 rounded-md bg-green-500 px-3 py-1.5 text-white hover:bg-green-600"
@@ -204,6 +210,7 @@ const OpenFolderModal = ({ onClose, fileListData, setFileListData }) => {
               tableData={fileListData}
               setFileListData={setFileListData} //for going inside the table
               selectedRows={selectedRows}
+              setLastLocation={setLastLocation} //for setting lastLocation
               setSelectedRows={setSelectedRows}
               setSelectedRowsData={setSelectedRowsData}
               handleDownload={handleTableDownload} // fro downloading the file

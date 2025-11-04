@@ -32,16 +32,17 @@ const ImportDeductee = () => {
   } = useContext(staticDataContext);
   const { showSuccess, showError, showOverride } = useContext(statusContext);
 
+  const [dayList, setDayList] = useState([]);
   const [gotoPage, setGotoPage] = useState(1);
   const [listData, setListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [fileListData, setFileListData] = useState([]);
+  const [lastLocation, setLastLocation] = useState("");
   const [showAddDayFolder, setShowAddDayFolder] = useState(false);
   const [showOpenFolderModal, setShowOpenFolderModal] = useState(false);
   const [additionalDetailModal, setAdditionalDetailModal] = useState(false);
-  const [dayList, setDayList] = useState([]);
 
   const [searchParams, setSearchParams] = useState({
     fy: "",
@@ -106,32 +107,6 @@ const ImportDeductee = () => {
     ...data,
   }));
 
-  const handleOpenFolderClick = async () => {
-    setShowOpenFolderModal(true);
-
-    try {
-      setLoading(true);
-      const entity = "WorkingFile";
-      const parsedParams = JSON.parse(params); // parse URL params
-      const clientPAN = ClientPAN;
-      // Combine params to form request data
-      const formData = {
-        ...parsedParams,
-        pan: clientPAN,
-        pageName: pageName,
-      };
-
-      const refinedFormData = refinedSearchParams(formData);
-      const response = await common.getFileList(entity, refinedFormData);
-
-      setFileListData(response?.data || []);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSearchParamChange = (e) => {
     const { name, value } = e.target;
 
@@ -167,9 +142,6 @@ const ImportDeductee = () => {
 
     const refinedParams = refinedSearchParams(searchObj);
 
-    // Navigate to the updated URL
-    // navigate(`/home/listSearch/importDeductee/${refinedParams}`);
-
     // // 🔥 If the user selects Withdrawal, redirect to another page
     if (name === "typeOfFile" && value === "Interest") {
       navigate(`/home/listSearch/importDeductee/${refinedParams}`);
@@ -180,23 +152,38 @@ const ImportDeductee = () => {
     }
   };
 
+  const handleOpenFolderClick = async () => {
+    setShowOpenFolderModal(true);
+    try {
+      setLoading(true);
+      const parsedParams = JSON.parse(params);
+      // Combine params to form request data
+      const formData = {
+        ...parsedParams,
+      };
+      const response = await common.getFileList(formData);
+      setLastLocation(response.data[0].lastLocation || "");
+      setFileListData(response?.data || []);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAdditionalDetailModal = async () => {
     setAdditionalDetailModal(true);
     try {
       setLoading(true);
-      const entity = "WorkingFile";
-      const parsedParams = JSON.parse(params); // parse URL params
-      const clientPAN = ClientPAN;
+      const parsedParams = JSON.parse(params);
       // Combine params to form request data
       const formData = {
         ...parsedParams,
-        pan: clientPAN,
-        pageName: pageName,
         additionalFolder: "Additional Detail",
       };
-      const refinedFormData = refinedSearchParams(formData);
-      const response = await common.getFileList(entity, refinedFormData);
+      const response = await common.getFileList(formData);
       setFileListData(response?.data || []);
+      setLastLocation(response?.data[0].lastLocation || "");
     } catch (error) {
       console.error(error);
     } finally {
@@ -398,6 +385,8 @@ const ImportDeductee = () => {
           onClose={() => setShowOpenFolderModal(false)}
           fileListData={fileListData}
           setFileListData={setFileListData}
+          lastLocation={lastLocation}
+          setLastLocation={setLastLocation}
         />
       )}
 
@@ -407,6 +396,8 @@ const ImportDeductee = () => {
           setAdditionalDetailModal={setAdditionalDetailModal}
           fileListData={fileListData}
           setFileListData={setFileListData}
+          lastLocation={lastLocation}
+          setLastLocation={setLastLocation}
         />
       )}
 

@@ -30,8 +30,8 @@ export const paginationWithSearchListData = async (
   return response;
 };
 
-export const fileList = async (entity, formData) => {
-  const response = await axios.get(`api${entity}/getFileList`, {
+export const fileList = async (formData) => {
+  const response = await axios.get(`apiWorkingFile/getFileList`, {
     params: {
       formData: formData,
     },
@@ -159,7 +159,6 @@ export const logout = async () => {
   }
 };
 
-
 export const importFile = async (selectedDocument, subpanel, param) => {
   const data = {
     pan: param.pan,
@@ -182,6 +181,17 @@ export const importFile = async (selectedDocument, subpanel, param) => {
   const response = await axios.post(`apiImportDeductee/importFile`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
+    },
+  });
+  return response;
+};
+
+export const searchOpenFolder = async (lastLocation, lastIndexFile) => {
+  const crtLocation = lastIndexFile?.lastLocation;
+  const response = await axios.get(`apiWorkingFile/searchLastLocation`, {
+    params: {
+      lastLocation: lastLocation,
+      crtLocation: crtLocation,
     },
   });
   return response;
