@@ -49,13 +49,13 @@ const TabSectionImportDeductee = ({ searchParams, setSearchParams }) => {
     localStorage.setItem("monthlyTabIndex", monthlyTabIndex);
   }, [dailyTabIndex, monthlyTabIndex]);
 
-  const parsedParams = params ? JSON.parse(decodeURIComponent(params)) : {};
+  const parsedParam = params ? JSON.parse(decodeURIComponent(params)) : {};
 
   const { crtFy, crtMonth, crtQuarter, ClientPAN, crtDay, typeOfFile } =
     useContext(staticDataContext);
 
   // Determine outer tab index (0 = Daily, 1 = Monthly)
-  const outerTabIndex = parsedParams.panelName === "Monthly Remitance" ? 1 : 0;
+  const outerTabIndex = parsedParam.panelName === "Monthly Remitance" ? 1 : 0;
 
   const handleTabChange = (selectedPanelName) => {
     // Update searchParams

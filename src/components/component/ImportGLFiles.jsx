@@ -87,105 +87,248 @@ const ImportGLFiles = ({ entity, subPanel }) => {
         ))}
       </div>
 
-      {/* Buttons Section  */}
-      <div className="mt-5 rounded-md border border-gray-100 shadow-md">
-        <div className="flex items-center-safe justify-between gap-2 p-5">
-          {/* GL Reconciliation Button  */}
-          <button
-            className="btnBorder DarkGreen btn"
-            onClick={() => handleProcessButtonClick("GenerateReport")}
-          >
-            <img
-              src={`${import.meta.env.BASE_URL}images/gificons/calculator.gif`}
-              alt="Export to Excel Button"
-              className="h-[30px] mix-blend-multiply"
-            />
-            <span className="w-full text-[16px]">GL Reconciliation</span>
-          </button>
-          <span>
-            <i className="fa-solid fa-right-long text-gray-700"></i>
-          </span>
-          {/* Generate TTUM Report Button */}
-          <button
-            className="btnBorder Green btn"
-            onClick={() => handleProcessButtonClick("GenerateReport")}
-          >
-            <img
-              src={`${import.meta.env.BASE_URL}images/gificons/generateexcelfile.gif`}
-              alt="Export to Excel Button"
-              className="h-[30px] mix-blend-multiply"
-            />
-            <span className="w-full text-[16px]">Generate TTUM Report</span>
-          </button>
-          <span>
-            <i className="fa-solid fa-right-long text-gray-700"></i>
-          </span>
-          {/* Generate Other OA & OE Excel */}
-          <button
-            className="btnBorder DarkGreen btn"
-            onClick={() => handleProcessButtonClick("GenerateReport")}
-          >
-            <img
-              src={`${import.meta.env.BASE_URL}images/gificons/GenerateExcel.gif`}
-              alt="Launch Icon"
-              className="h-[30px] w-[35px] mix-blend-multiply"
-            />
-            <span className="btntext text-[16px]">
-              Generate Other OA & OE Excel
-            </span>
-          </button>
-        </div>
-        <div className="flex items-center-safe justify-between gap-2 p-5">
-          {/* Generate Customer ID & PAN List  */}
-          <button
-            className="btnBorder Green btn"
-            onClick={() => handleProcessButtonClick("GenerateReport")}
-          >
-            <img
-              src={`${import.meta.env.BASE_URL}images/gificons/process.gif`}
-              alt="Launch Icon"
-              className="h-[30px] w-[35px] mix-blend-multiply"
-            />
-            <span className="btntext text-[16px]">
-              Generate Customer ID & PAN List
-            </span>
-          </button>
-          <span>
-            <i className="fa-solid fa-right-long text-gray-700"></i>
-          </span>
-          {/*  Validate & Generate */}
-          <button
-            className="btnBorder DarkGreen btn"
-            onClick={() =>
-              handleProcessButtonClick("ValidateDataAndSegregateData")
-            }
-          >
-            <img
-              src={`${import.meta.env.BASE_URL}images/gificons/ValidateExcel.gif`}
-              alt="Search Icon"
-              className="h-7 mix-blend-multiply"
-            />
-            <span className="btntext text-[16px]">
-              Validate & Generate Format File
-            </span>
-          </button>
-          <span>
-            <i className="fa-solid fa-right-long text-gray-700"></i>
-          </span>
-          {/* Validate & Generate  */}
-          <button
-            className="btnBorder yellow btn"
-            onClick={() => handleProcessButtonClick("GenerateFormatFile")}
-          >
-            <img
-              src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
-              alt="Launch Icon"
-              className="h-[30px] w-[35px] mix-blend-multiply"
-            />
-            <span className="btntext text-[16px]">Generate Format File</span>
-          </button>
-        </div>
-      </div>
+      {entity === "ImportDeductee" && (
+        <>
+          {/* Buttons Section  Import Deductee*/}
+          <div className="mt-5 rounded-md border border-gray-100 shadow-md">
+            <div className="flex items-center-safe justify-between gap-2 p-5">
+              {/* GL Reconciliation Button  */}
+              <button
+                className="btnBorder DarkGreen btn"
+                onClick={() => handleProcessButtonClick("GenerateReport")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/calculator.gif`}
+                  alt="Export to Excel Button"
+                  className="h-[30px] mix-blend-multiply"
+                />
+                <span className="w-full text-[16px]">GL Reconciliation</span>
+              </button>
+              <span>
+                <i className="fa-solid fa-right-long text-gray-700"></i>
+              </span>
+              {/* Generate TTUM Report Button */}
+              <button
+                className="btnBorder Green btn"
+                onClick={() => handleProcessButtonClick("GenerateReport")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/generateexcelfile.gif`}
+                  alt="Export to Excel Button"
+                  className="h-[30px] mix-blend-multiply"
+                />
+                <span className="w-full text-[16px]">Generate TTUM Report</span>
+              </button>
+              <span>
+                <i className="fa-solid fa-right-long text-gray-700"></i>
+              </span>
+              {/* Generate Other OA & OE Excel */}
+              <button
+                className="btnBorder DarkGreen btn"
+                onClick={() => handleProcessButtonClick("GenerateReport")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/GenerateExcel.gif`}
+                  alt="Launch Icon"
+                  className="h-[30px] w-[35px] mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">
+                  Generate Other OA & OE Excel
+                </span>
+              </button>
+            </div>
+            <div className="flex items-center-safe justify-between gap-2 p-5">
+              {/* Generate Customer ID & PAN List  */}
+              <button
+                className="btnBorder Green btn"
+                onClick={() => handleProcessButtonClick("GenerateReport")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/process.gif`}
+                  alt="Launch Icon"
+                  className="h-[30px] w-[35px] mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">
+                  Generate Customer ID & PAN List
+                </span>
+              </button>
+              <span>
+                <i className="fa-solid fa-right-long text-gray-700"></i>
+              </span>
+              {/*  Validate & Generate */}
+              <button
+                className="btnBorder DarkGreen btn"
+                onClick={() =>
+                  handleProcessButtonClick("ValidateDataAndSegregateData")
+                }
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/ValidateExcel.gif`}
+                  alt="Search Icon"
+                  className="h-7 mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">
+                  Validate & Generate Format File
+                </span>
+              </button>
+              <span>
+                <i className="fa-solid fa-right-long text-gray-700"></i>
+              </span>
+              {/* Validate & Generate  */}
+              <button
+                className="btnBorder yellow btn"
+                onClick={() => handleProcessButtonClick("GenerateFormatFile")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
+                  alt="Launch Icon"
+                  className="h-[30px] w-[35px] mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">
+                  Generate Format File
+                </span>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+      {entity === "Withdrawal" && (
+        <>
+          {/* Buttons Section  WithDrawal*/}
+          <div className="mt-5 rounded-md border border-gray-100 shadow-md">
+            <div className="flex items-center-safe justify-between gap-2 p-5">
+              {/* Get Transactions Button  */}
+              <button
+                className="btnBorder DarkGreen btn"
+                onClick={() => handleProcessButtonClick("GenerateReport")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/calculator.gif`}
+                  alt="Export to Excel Button"
+                  className="h-[30px] mix-blend-multiply"
+                />
+                <span className="w-full text-[16px]">Get Transactions</span>
+              </button>
+              <span>
+                <i className="fa-solid fa-right-long text-gray-700"></i>
+              </span>
+              {/* Add Monthly Dump Transaction  Button */}
+              <button
+                className="btnBorder Green btn"
+                onClick={() => handleProcessButtonClick("GenerateReport")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/generateexcelfile.gif`}
+                  alt="Export to Excel Button"
+                  className="h-[30px] mix-blend-multiply"
+                />
+                <span className="w-full text-[16px]">
+                  Add Monthly Dump Transaction
+                </span>
+              </button>
+              <span>
+                <i className="fa-solid fa-right-long text-gray-700"></i>
+              </span>
+              {/* Map Transaction */}
+              <button
+                className="btnBorder DarkGreen btn"
+                onClick={() => handleProcessButtonClick("GenerateReport")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/GenerateExcel.gif`}
+                  alt="Launch Icon"
+                  className="h-[30px] w-[35px] mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">Map Transaction</span>
+              </button>
+              <span>
+                <i className="fa-solid fa-right-long text-gray-700"></i>
+              </span>
+              {/* Generate Over All Excel */}
+              <button
+                className="btnBorder yellow btn"
+                onClick={() => handleProcessButtonClick("GenerateFormatFile")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
+                  alt="Launch Icon"
+                  className="h-[30px] w-[35px] mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">
+                  Generate Over All Excel
+                </span>
+              </button>
+            </div>
+            <div className="flex items-center-safe justify-between gap-2 p-5">
+              {/* GL Reconciliation */}
+              <button
+                className="btnBorder Green btn"
+                onClick={() => handleProcessButtonClick("GenerateReport")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/process.gif`}
+                  alt="Launch Icon"
+                  className="h-[30px] w-[35px] mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">GL Reconciliation</span>
+              </button>
+              <span>
+                <i className="fa-solid fa-right-long text-gray-700"></i>
+              </span>
+              {/* Generate TTUM Report */}
+              <button
+                className="btnBorder yellow btn"
+                onClick={() => handleProcessButtonClick("GenerateFormatFile")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
+                  alt="Launch Icon"
+                  className="h-[30px] w-[35px] mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">
+                  Generate TTUM Report
+                </span>
+              </button>
+              <span>
+                <i className="fa-solid fa-right-long text-gray-700"></i>
+              </span>
+              {/*  Generate OA/OL Excel */}
+              <button
+                className="btnBorder DarkGreen btn"
+                onClick={() =>
+                  handleProcessButtonClick("ValidateDataAndSegregateData")
+                }
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/ValidateExcel.gif`}
+                  alt="Search Icon"
+                  className="h-7 mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">
+                  Generate OA/OL Excel
+                </span>
+              </button>
+              <span>
+                <i className="fa-solid fa-right-long text-gray-700"></i>
+              </span>
+              {/* Generate Format File */}
+              <button
+                className="btnBorder yellow btn"
+                onClick={() => handleProcessButtonClick("GenerateFormatFile")}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/gificons/launchTemplate.gif`}
+                  alt="Launch Icon"
+                  className="h-[30px] w-[35px] mix-blend-multiply"
+                />
+                <span className="btntext text-[16px]">
+                  Generate Format File
+                </span>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };
