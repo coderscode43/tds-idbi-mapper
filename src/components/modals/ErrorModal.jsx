@@ -20,7 +20,9 @@ const ErrorModal = () => {
           {/* Red Check Circle */}
           <div className="mx-auto flex h-18 w-18 items-center justify-center rounded-full bg-red-100">
             <div className="mx-auto flex h-15 w-15 items-center justify-center rounded-full bg-red-200">
-              <i className="fa-solid fa-circle-xmark rounded-full bg-white text-5xl text-red-600"></i>
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white">
+                <i className="fa-solid fa-circle-xmark rounded-4xl bg-white text-5xl text-red-600"></i>
+              </div>
             </div>
           </div>
           {/* Title */}

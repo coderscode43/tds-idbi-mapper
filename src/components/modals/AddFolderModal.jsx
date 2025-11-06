@@ -27,35 +27,12 @@ const AddFolderModal = ({
     if (!selectedFolder) return;
 
     try {
-      // Parse extra params if provided
-      const parsedParams = params ? JSON.parse(params) : {};
-
-      // Add base form data fields
-      const formData = { ...parsedParams, OverideFile: overrideValue };
-
-      // Get current folder path or default to root
-      const lastLocation = fileListData[0]?.lastLocation || "/";
-
-      // Convert FileList to array
-      const fileBlob = [...selectedFolder];
-
-      // Create FormData for upload
-      const formDataObj = new FormData();
-      formDataObj.append("formData", JSON.stringify(formData));
-      console.log("params:", params);
-      formDataObj.append("blob", fileBlob);
-      formDataObj.append("lastLocation", lastLocation);
-
-      // Append each file and its relative path
-      Array.from(selectedFolder).forEach((file) => {
-        if (!file) throw new Error("File is undefined");
-        formDataObj.append("blob", file);
-        formDataObj.append("filePath", file.webkitRelativePath);
-      });
-
-      // Upload folder to backend
-      const response = await common.getAddFolder(formDataObj);
-
+      const response = await common.getAddFolder(
+        params,
+        overrideValue,
+        selectedFolder,
+        fileListData
+      );
       // Update table and close modal
       setFileListData(response?.data?.entities);
       closeAddFolderModal();

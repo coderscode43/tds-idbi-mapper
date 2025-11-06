@@ -1,19 +1,21 @@
-import common from "@/common/common";
 import FilterSelect from "@/components/component/FilterSelect";
 import staticDataContext from "@/context/staticDataContext";
 import { useContext } from "react";
 
 const SettingPage = () => {
   const {
-    Quarter,
     crtQuarter,
     crtMonth,
-    Month,
     crtFy,
+    monthList,
     financialYear,
     typeOfFile,
     workingFileBasePath,
   } = useContext(staticDataContext);
+
+  // Filter months based on selected quarter
+  const quarterToUse = crtQuarter;
+  const filteredMonths = monthList?.[quarterToUse] || [];
 
   return (
     <div className="space-y-5">
@@ -23,31 +25,32 @@ const SettingPage = () => {
         <div className="flex w-full gap-5">
           <FilterSelect
             label="Financial Year"
-            name="financialYear"
+            name="fy"
             options={financialYear}
             value={crtFy}
-            // onChange={handleSearchParamChange}
+            // onChange={value}
           />
           <FilterSelect
             label="Month"
             name="month"
-            options={Month}
-            value={crtMonth?.toUpperCase()}
-            // onChange={handleSearchParamChange}
+            options={filteredMonths}
+            value={crtMonth}
+            // onChange={value}
           />
+
           <FilterSelect
             label="Quarter"
             name="quarter"
-            options={Quarter}
+            options={Object.keys(monthList || {})}
             value={crtQuarter}
-            // onChange={handleSearchParamChange}
+            // onChange={value}
           />
           <FilterSelect
             label="Type of file"
             name="typeOfFile"
             options={typeOfFile}
-            value={typeOfFile}
-            onChange={common.handleSearchInputChange}
+            value={typeOfFile?.[0] ?? ""}
+            // onChange={value}
           />
         </div>
       </div>

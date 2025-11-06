@@ -158,7 +158,7 @@ const TabSectionWithDrawal = ({ searchParams, setSearchParams }) => {
                     )}
                     {tab.panelName === "PanStatus" && (
                       <ImportWithDrawalDaily
-                        subPanel={["Pan Status"]}
+                        subPanel={["PanStatus"]}
                         entity={"Withdrawal"}
                       />
                     )}

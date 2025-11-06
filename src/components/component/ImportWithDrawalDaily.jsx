@@ -49,33 +49,53 @@ const ImportWithDrawalDaily = ({ subPanel, entity }) => {
   return (
     <>
       {/* Import File Section */}
-      <div className="flex items-end gap-5 rounded-md border border-gray-100 p-5 shadow-md focus:outline-none">
-        <div>
-          <label className="font-medium text-[var(--primary-color)]">
-            Select Folder
-          </label>
-          <input
-            type="file"
-            name="importFile"
-            ref={(el) => (fileInputRef.current[0] = el)}
-            onChange={(e) => setSelectedDocuments(e.target.files[0])}
-            id="importFile"
-            className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 file:mr-3 file:cursor-pointer focus:outline-none"
-          />
+      <div className="flex items-center gap-56 rounded-md border border-gray-100 p-5 shadow-md">
+        <div className="flex items-end gap-5 focus:outline-none">
+          <div>
+            <label className="font-medium text-[var(--primary-color)]">
+              Select Folder
+            </label>
+            <input
+              type="file"
+              name="importFile"
+              ref={(el) => (fileInputRef.current[0] = el)}
+              onChange={(e) => setSelectedDocuments(e.target.files[0])}
+              id="importFile"
+              className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray-900 file:mr-3 file:cursor-pointer focus:outline-none"
+            />
+          </div>
+          <button className="btnBorder lightCyan btn" onClick={handleImport}>
+            <img
+              className="h-[35px] w-[35px] mix-blend-multiply"
+              src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
+              alt="Import"
+            />
+            <span>Import File</span>
+          </button>
         </div>
-        <button className="btnBorder lightCyan btn" onClick={handleImport}>
-          <img
-            className="h-[35px] w-[35px] mix-blend-multiply"
-            src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
-            alt="Import"
-          />
-          <span>Import File</span>
-        </button>
-          {subPanel === "Pan Status" &&(
-            <>
-            
-            </>
-          )} 
+        {subPanel[0] === "PanStatus" && (
+          <>
+            <div className="flex gap-7">
+              <div className="mx-5 flex items-center gap-2">
+                <input type="checkbox" id="ITR" name="ITR" className="h-6" />
+                <label htmlFor="ITR">ITR</label>
+              </div>
+              <div>
+                <button
+                  className="btnBorder lightCyan btn"
+                  onClick={handleImport}
+                >
+                  <img
+                    className="h-[35px] w-[35px] mix-blend-multiply"
+                    src={`${import.meta.env.BASE_URL}images/gificons/importFile.gif`}
+                    alt="Import"
+                  />
+                  <span>Change in PAN Status</span>
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Buttons Section  */}
@@ -87,7 +107,7 @@ const ImportWithDrawalDaily = ({ subPanel, entity }) => {
             onClick={() => handleProcessButtonClick("GenerateReport")}
           >
             <img
-              src={`${import.meta.env.BASE_URL}images/gificons/calculator.gif`}
+              src={`${import.meta.env.BASE_URL}images/gificons/errorfile.gif`}
               alt="Export to Excel Button"
               className="h-[30px] mix-blend-multiply"
             />

@@ -30,6 +30,11 @@ export const paginationWithSearchListData = async (
   return response;
 };
 
+export const dayListdata = async (formData) => {
+  const response = await axios.post(`apiWorkingFile/list/dayFolder`, formData);
+  return response;
+};
+
 export const fileList = async (formData) => {
   const response = await axios.get(`apiWorkingFile/getFileList`, {
     params: {

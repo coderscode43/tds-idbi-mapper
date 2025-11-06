@@ -86,8 +86,18 @@ const ImportDeductee = () => {
     }
   };
 
+  const fetchDayListData = async () => {
+    try {
+      const response = await common.getDayListData(params);
+      setDayList(response.data);
+    } catch (error) {
+      console.error("Error fetching list data:", error);
+    }
+  };
+
   useEffect(() => {
     fetchListData();
+    fetchDayListData();
   }, [params]);
 
   // Table Details
@@ -279,7 +289,7 @@ const ImportDeductee = () => {
                   label="Date"
                   name="day"
                   options={dayList}
-                  value={crtDay}
+                  value={dayList[0]}
                   onChange={(value) =>
                     handleSearchParamChange({ target: { name: "day", value } })
                   }

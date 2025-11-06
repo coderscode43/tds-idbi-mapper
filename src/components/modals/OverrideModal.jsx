@@ -21,7 +21,9 @@ const OverrideModal = () => {
           {/* Red Check Circle */}
           <div className="mx-auto flex h-18 w-18 items-center justify-center rounded-full bg-amber-100">
             <div className="mx-auto flex h-15 w-15 items-center justify-center rounded-full bg-amber-200">
-              <i className="fa-solid fa-circle-exclamation rounded-full bg-white text-5xl text-amber-500"></i>
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white">
+                <i className="fa-solid fa-circle-exclamation rounded-full bg-white text-5xl text-amber-500"></i>
+              </div>
             </div>
           </div>
 

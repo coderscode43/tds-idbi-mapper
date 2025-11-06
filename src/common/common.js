@@ -4,6 +4,7 @@ import {
   addFolder,
   createDayFolder,
   createFolder,
+  dayListdata,
   downloadFile,
   fileDeleted,
   fileList,
@@ -36,16 +37,70 @@ const common = {
     );
   },
 
+  getDayListData: async (params) => {
+    const parsedParams = params ? JSON.parse(params) : {};
+    const formData = {
+      ...parsedParams,
+    };
+    return await dayListdata(formData);
+  },
+
   getFileList: async (formData) => {
     const refinedFormData = refinedSearchParams(formData);
     return await fileList(refinedFormData);
   },
 
-  getAddFolder: async (formDataObj) => {
+  getAddFolder: async (
+    params,
+    overrideValue,
+    selectedFolder,
+    fileListData
+  ) => {
+    // Parse extra params if provided
+    const parsedParams = params ? JSON.parse(params) : {};
+
+    // Add base form data fields
+    const formData = { ...parsedParams, OverideFile: overrideValue };
+
+    // Get current folder path or default to root
+    const lastLocation = fileListData[0]?.lastLocation || "/";
+
+    // Convert FileList to array
+    const fileBlob = [...selectedFolder];
+
+    // Create FormData for upload
+    const formDataObj = new FormData();
+    formDataObj.append("formData", JSON.stringify(formData));
+    console.log("params:", params);
+    formDataObj.append("blob", fileBlob);
+    formDataObj.append("lastLocation", lastLocation);
+
+    // Append each file and its relative path
+    Array.from(selectedFolder).forEach((file) => {
+      if (!file) throw new Error("File is undefined");
+      formDataObj.append("blob", file);
+      formDataObj.append("filePath", file.webkitRelativePath);
+    });
     return await addFolder(formDataObj);
   },
 
-  getAddFileInFolder: async (formDataObj) => {
+  getAddFileInFolder: async (
+    params,
+    overrideValue,
+    selectedDocument,
+    fileListData
+  ) => {
+    const parsedParams = params ? JSON.parse(params) : {};
+    const formData = { ...parsedParams, OverideFile: overrideValue };
+
+    const lastLocation = fileListData[0]?.lastLocation || "/";
+    const fileBlob = [...selectedDocument];
+
+    const formDataObj = new FormData();
+    formDataObj.append("newDec", JSON.stringify(formData));
+    formDataObj.append("dec", lastLocation);
+    formDataObj.append("blob", fileBlob[0]);
+
     return await addFileInFolder(formDataObj);
   },
 

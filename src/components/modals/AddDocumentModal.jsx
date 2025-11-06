@@ -25,18 +25,12 @@ const AddDocumentModal = ({
   const handleAddDocumentFolder = async (overrideValue = "") => {
     if (!selectedDocument) return;
     try {
-      const parsedParams = params ? JSON.parse(params) : {};
-      const formData = { ...parsedParams, OverideFile: overrideValue };
-
-      const lastLocation = fileListData[0]?.lastLocation || "/";
-      const fileBlob = [...selectedDocument];
-
-      const formDataObj = new FormData();
-      formDataObj.append("newDec", JSON.stringify(formData));
-      formDataObj.append("dec", lastLocation);
-      formDataObj.append("blob", fileBlob[0]);
-      const response = await common.getAddFileInFolder(formDataObj);
-
+      const response = await common.getAddFileInFolder(
+        params,
+        overrideValue,
+        selectedDocument,
+        fileListData
+      );
       setFileListData(response?.data?.entities);
       closeAddDocumentModal();
     } catch (error) {
