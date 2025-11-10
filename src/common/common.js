@@ -50,12 +50,7 @@ const common = {
     return await fileList(refinedFormData);
   },
 
-  getAddFolder: async (
-    params,
-    overrideValue,
-    selectedFolder,
-    fileListData
-  ) => {
+  getAddFolder: async (params, overrideValue, selectedFolder, fileListData) => {
     // Parse extra params if provided
     const parsedParams = params ? JSON.parse(params) : {};
 

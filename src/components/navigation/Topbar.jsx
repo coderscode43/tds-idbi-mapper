@@ -42,6 +42,20 @@ const TopBar = ({ isSidebarOpen, setSideBarOpen }) => {
             </h1>
           </div> */}
           <div className="flex items-center justify-center gap-5">
+            <button
+              // disabled={selectFolder.length === 0}
+              className="btnBorder Violet btn"
+              onClick={() =>
+                window.open("http://localhost:8080/TDSProcessWeb", "_blank")
+              }
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}images/gificons/database.gif`}
+                alt="TDS Process Web"
+                className="h-7 mix-blend-multiply"
+              />
+              <span className="btntext text-[16px]">TDS Process Web</span>
+            </button>
             <div>
               <DropdownMenu />
             </div>
