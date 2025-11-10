@@ -89,7 +89,13 @@ const ImportDeductee = () => {
   const fetchDayListData = async () => {
     try {
       const response = await common.getDayListData(params);
-      setDayList(response.data);
+      const fetchedDays = response.data;
+      setDayList(fetchedDays);
+      const searchParams = JSON.parse(params);
+      searchParams.day = !searchParams.day ? fetchedDays?.[0] : searchParams.day;
+      navigate(`/home/listSearch/importDeductee/${JSON.stringify(searchParams)}`, {
+        replace: true,
+      });
     } catch (error) {
       console.error("Error fetching list data:", error);
     }
@@ -139,9 +145,8 @@ const ImportDeductee = () => {
           ? updatedSearchParams.typeOfFile
           : searchParams.typeOfFile, // Preserve if not updated
       day:
-        updatedSearchParams.panelName === "Daily Remitance"
-          ? updatedSearchParams.day
-          : crtDay,
+        updatedSearchParams.panelName === ""
+          && updatedSearchParams.day,
       panelName: updatedSearchParams.panelName || "Daily Remitance",
       // pageName: pageName,
       pageName:
@@ -289,7 +294,7 @@ const ImportDeductee = () => {
                   label="Date"
                   name="day"
                   options={dayList}
-                  value={dayList[0]}
+                  value={parsedParams.day || dayList[0]}
                   onChange={(value) =>
                     handleSearchParamChange({ target: { name: "day", value } })
                   }
